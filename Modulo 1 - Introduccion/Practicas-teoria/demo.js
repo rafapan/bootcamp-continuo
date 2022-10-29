@@ -1,0 +1,1 @@
+console.log("Mostrando mensaje por consola desde un fichero");
