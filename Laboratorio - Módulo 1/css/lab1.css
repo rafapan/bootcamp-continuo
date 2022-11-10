@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@300;400&display=swap');
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+   background-color: #f2e4d4; 
+   padding: 15px;
+   font-family: 'Lato', sans-serif;
+   font-size: 16px;
+   color: #1c1a28;
+}
+
+.container {
+    max-width: 360px;
+    margin: 0 auto;
+    background-color: #f3f1ef;
+    padding: 20px;
+    border-radius: 6px;
+}
+
+.img {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+img {
+    border-radius: 4px;
+}
+
+label, input {
+    display: block;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+label {
+    margin-bottom: 6px;
+    color: #999999;
+    padding-left: 1px;
+
+}
+
+input {
+    margin-bottom: 15px;
+    border: 0;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 1rem;
+}
+
+input:last-child {
+    margin-bottom: 30px;
+}
+
+button {
+   background-color: #1e1d30; 
+   color: #f8f8f8;
+   width: 100%;
+   max-width: 200px;
+   margin: 0 auto;
+   display: block;
+   padding: 10px 15px;
+   border-radius: 6px;
+   border: 0;
+   font-size: 0.95rem;
+   box-shadow: 0 2px 2px 0 #a7a099, 0 0 6px #141221 inset;
+   cursor: pointer;
+   position: relative;
+}
+
+button:hover {
+    background-color: #5b588f;
+    box-shadow: 0 2px 2px 0 #a7a099, 0 0 6px #484470 inset;
+}
+
+button:active {
+    top: 1px;
+    box-shadow: none;
+    background-color: #6e68db;
+}
