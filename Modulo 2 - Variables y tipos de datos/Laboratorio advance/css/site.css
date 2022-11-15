@@ -27,6 +27,8 @@ h1 {
     margin-bottom: 40px;
     text-transform: uppercase;
     letter-spacing: 8px;
+    border-bottom: 1px solid #4e5a6b;
+    padding-bottom: 10px;
 }
 
 .container {
@@ -68,7 +70,7 @@ h1 {
 }
 
 .loc-hotel {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     margin-bottom: 10px;
     color: #c7d1d1;
 }
