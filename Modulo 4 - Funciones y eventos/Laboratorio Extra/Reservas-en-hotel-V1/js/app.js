@@ -1,11 +1,7 @@
 // var getTypeRoom = () => document.getElementById("type-room").selectedIndex;
 var getTypeRoom = () => document.getElementById("type-room").value;
-
 var getSpa = () => document.getElementById("add-spa").checked;
-// Nos devuelve true o false
-
 var getEmplacement = () => document.getElementById("emplacement-room").value;
-
 var getNights = () => parseInt(document.getElementById("numberNight").value);
 var getParking = () => parseInt(document.getElementById("numberParking").value);
 
@@ -13,38 +9,28 @@ var getParking = () => parseInt(document.getElementById("numberParking").value);
 var resultado;
 var valueRoom;
 var priceTotal;
-var priceParking;
+var priceParking = 0;
 
-// console.log("El tipo de habitación seleccionado es", getTypeRoom());
-// console.log(typeof(getTypeRoom()));
-// console.log("¿El cliente quiere Spa?", getSpa());
-// console.log("La ocupación es:", getEmplacement());
-// console.log("El número de noches es:", getNights());
-// console.log(typeof(getNights()));
-// console.log("El número de días de parking es:", getParking());
-// console.log(typeof(getParking()));
-
-
-
-if (getTypeRoom() == "junior") {
-    valueRoom = 120;
-} else if (getTypeRoom() == "suite") {
-    valueRoom = 150;
-} else {
-    valueRoom = 100;
+switch(getTypeRoom()) {
+    case "junior": valueRoom = 120; break;
+    case "suite": valueRoom = 150; break;
+    default: valueRoom = 100; break;
 }
 
-if (getSpa() == true) {
-    valueRoom = valueRoom + 20;
-} else {
-    valueRoom = valueRoom;
+var valueRoom =  getSpa() == true ? valueRoom + 20 : valueRoom;
+var valueSpa = valueRoom;
+
+switch(getEmplacement()) {
+    case "triple": valueRoom = valueRoom + (valueRoom * 0.25); break;
+    case "individual": valueRoom = valueRoom - (valueRoom * 0.25); break;
+    default: valueRoom = valueRoom; break;
 }
 
-if (getEmplacement() == "triple") {
-    valueRoom = valueRoom + (valueRoom * 0.25);
-} else if (getEmplacement() == "individual") {
-    valueRoom = valueRoom - (valueRoom * 0.25);
-}
+// if (getEmplacement() == "triple") {
+//     valueRoom = valueRoom + (valueRoom * 0.25);
+// } else if (getEmplacement() == "individual") {
+//     valueRoom = valueRoom - (valueRoom * 0.25);
+// }
 
 function calcParking() {
     getParking();
@@ -70,7 +56,7 @@ function resultTotal() {
     calcParking();
     priceTotal = valueRoom + priceParking;
     console.log("Sumandole el parking el total es:", priceTotal);
-    
+    document.getElementById("printResult").innerText = priceTotal;
 }
 
 
