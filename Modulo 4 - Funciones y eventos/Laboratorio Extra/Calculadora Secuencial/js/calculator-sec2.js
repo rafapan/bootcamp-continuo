@@ -1,13 +1,14 @@
 var operando = 0;
 var getNumber = () => parseInt(document.getElementById("input-number").value);
 var operacion = "";
-var resultadoFinal = () => parseInt(document.getElementById("result").innerText = resultado);
+var resultadoFinal = () =>
+  parseInt((document.getElementById("result").innerText = resultado));
 var resultado;
 console.log(resultado);
 
 function resetCount() {
-    resultado = null;
-    operacion = "";
+  resultado = undefined;
+  operacion = "";
 }
 
 function getResultadoParcial(operacion) {
@@ -17,6 +18,12 @@ function getResultadoParcial(operacion) {
       break;
     case "-":
       resultado = resultado - operando;
+      break;
+    case "*":
+      resultado = resultado * operando;
+      break;
+    case "/":
+      resultado = resultado / operando;
       break;
     default:
       resultado = operando;
@@ -45,6 +52,28 @@ function restar() {
   console.log("El número introducido es:", operando);
 }
 
+function multiply() {
+  operando = parseInt(document.getElementById("input-number").value);
+
+  getResultadoParcial(operacion);
+
+  operacion = "*";
+
+  console.log("El resultado parcial es:", resultado);
+  console.log("El número introducido es:", operando);
+}
+
+function divide() {
+  operando = parseInt(document.getElementById("input-number").value);
+
+  getResultadoParcial(operacion);
+
+  operacion = "/";
+
+  console.log("El resultado parcial es:", resultado);
+  console.log("El número introducido es:", operando);
+}
+
 function result() {
   operando = getNumber();
   getResultadoParcial(operacion);
@@ -56,5 +85,7 @@ function result() {
 
 document.getElementById("btn-add").addEventListener("click", sumar);
 document.getElementById("btn-restar").addEventListener("click", restar);
+document.getElementById("btn-multiply").addEventListener("click", multiply);
+document.getElementById("btn-divide").addEventListener("click", divide);
 
 document.getElementById("btn-resolve").addEventListener("click", result);
