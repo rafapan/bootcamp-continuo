@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Lato:wght@400;700&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Lato', sans-serif;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    color: #444444;
+    font-size: 1.6rem;
+}
+
+.headline {
+    margin-bottom: 40px;
+    position: absolute;
+    width: 100%;
+    top: -150px;
+    left: 0;
+}
+
+h1 {
+    font-family: 'Bebas Neue', cursive;
+    font-size: 5rem;
+    line-height: 1;
+    color: white;
+}
+
+.subtitle {
+    font-size: 1.6rem;
+    color: white;
+}
+
+.body {
+    width: 100vw;
+    height: 100vh;
+    padding: 30px;
+}
+
+.backdrop {
+    background-image: url(../img/bg-forest.jpeg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 0 60px 0 60px;
+    position: relative;
+    overflow: hidden;
+}
+
+.backdrop::after {
+    content: '';
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #040700;
+    height: 100%;
+    width: 100%;
+    opacity: 0.3;
+}
+
+.calculadora {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 400px;
+    height: max-content;
+    z-index: 1;
+}
+
+.result {
+    background-color: #101810;
+    font-size: 4rem;
+    border-radius: 0 18px 0 0;
+    padding: 12px 24px;
+    color: #fcfcfc;
+    text-align: right;
+    margin-bottom: 6px;
+}
+
+.panel-interactive, .result {
+    background-color: #101810;
+}
+
+.panel-interactive {
+    padding: 24px;
+}
+
+.calc-body {
+    background-color: rgb(6 9 6 / 63%);
+    border-radius: 0 30px 0 30px;
+    padding: 12px;
+}
+
+.panel-interactive > *:not(:last-child) {
+    margin-bottom: 24px;
+}
+
+.label {
+    color: #fcfcfc;
+    display: block;
+    margin-bottom: 9px;
+    opacity: 0.75;
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+}
+.controls button {
+    background-color: #317076;
+    border-radius: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
+.controls button, button#btn-resolve {
+    color: #fcfcfc;
+    cursor: pointer;
+    outline: none;
+    border: none;
+    box-shadow: 1px 2px 6px #141f14;
+    position: relative;
+    height: 48px;
+}
+
+button .material-symbols-rounded {
+    font-size: 2.5rem;
+    /* font-weight: 700; */
+}
+
+.controls button:active, .controls button:active:focus, button#btn-resolve:active, button#btn-resolve:active:focus {
+    box-shadow: none;
+    background-color: #0ee3f8;
+    top: 1px;
+}
+
+.controls button:hover {
+    background-color: #1cb9c8;
+}
+
+.controls button:not(:last-child) {
+    margin-right: 12px;
+}
+
+button#btn-resolve {
+    display: block;
+    margin: 0 auto;
+    text-transform: uppercase;
+    font-size: 1.8rem;
+    padding: 12px 30px;
+    border-radius: 6px;
+    letter-spacing: 1px;
+    width: 70%;
+    background-color: #4fb2bc;
+}
+
+input#input-number {
+    border-radius: 6px;
+    width: 100%;
+    font-size: 3rem;
+    text-align: right;
+    padding: 12px 0;
+    background-color: #fcfcfc;
+}
+
+.rotate {
+    transform: rotate(-60deg);
+}
