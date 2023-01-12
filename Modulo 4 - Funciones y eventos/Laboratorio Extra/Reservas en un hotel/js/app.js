@@ -52,7 +52,7 @@ function resultTotal() {
     if (isNaN(priceTotal())) {
         document.getElementById("printResult").innerText = "Completa correctamente los campos";
     } else {
-        document.getElementById("printResult").innerText = priceTotal();
+        document.getElementById("printResult").innerText = priceTotal() + " €";
     }
 }
 

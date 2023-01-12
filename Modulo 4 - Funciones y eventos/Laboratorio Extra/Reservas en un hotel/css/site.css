@@ -1,0 +1,98 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Heebo:wght@300;400;500&display=swap');
+
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: 'Heebo', sans-serif;
+}
+
+html {
+    font-size: 10px;
+}
+
+body {
+    background-color: #1f2537;
+    padding: 15px;
+    color: #fdfcff;
+    font-size: 1.4rem;
+}
+
+.container {
+    width: 360px;
+    margin: 0 auto;
+    
+}
+.panel {
+    background-color: #2a2d41;
+    padding: 32px;
+    border-radius: 4px;
+}
+
+.headline {
+    margin-bottom: 40px
+}
+
+h1 {
+    font-family: 'Bebas Neue', cursive;
+    margin-top: 30px;
+    font-size: 5rem;
+}
+
+.subtitle {
+    color: #d1d3e1;
+    font-size: 1.6rem;
+}
+
+.form-group:not(:last-child) {
+    margin-bottom: 20px;
+}
+
+.form-group.dflex {
+    display: flex;
+    align-items: center;
+}
+
+.form-group.dflex label {
+    margin-bottom: 0;
+    margin-right: 10px;
+}
+
+
+label, .label {
+    color: #c1c4d7;
+    display: inline-block;
+    margin-bottom: 6px;
+}
+
+select, input {
+    display: block;
+    font-size: 1.8rem;
+    height: 30px;
+    padding-left: 12px;
+    outline: none;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+input[type="checkbox"] {
+    display: inline-block;
+    width: 15%;
+}
+
+select, input:not([type="checkbox"]) {
+    width: 100%;
+}
+
+#printResult {
+    padding: 12px;
+    background-color: white;
+    color: #02020e;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 6rem;
+    text-align: center;
+}
+
+select, input, #printResult {
+    border-radius: 3px;
+}
