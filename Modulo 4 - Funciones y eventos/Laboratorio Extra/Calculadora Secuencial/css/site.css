@@ -79,9 +79,9 @@ h1 {
 
 .result {
     background-color: #101810;
-    font-size: 4rem;
+    font-size: 5rem;
     border-radius: 0 18px 0 0;
-    padding: 12px 24px;
+    padding: 18px 24px;
     color: #fcfcfc;
     text-align: right;
     margin-bottom: 6px;
@@ -92,8 +92,9 @@ h1 {
 }
 
 .panel-interactive {
-    padding: 24px;
+    padding: 42px 60px 66px;
 }
+
 
 .calc-body {
     background-color: rgb(6 9 6 / 63%);
@@ -101,7 +102,11 @@ h1 {
     padding: 12px;
 }
 
-.panel-interactive > *:not(:last-child) {
+.panel-interactive > .controls:not(:last-child) {
+    margin-bottom: 12px;
+}
+
+.intro-num {
     margin-bottom: 24px;
 }
 
@@ -117,8 +122,8 @@ h1 {
     justify-content: center;
 }
 .controls button {
-    background-color: #317076;
-    border-radius: 6px;
+    background-color: #122b24;
+    border-radius: 1px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -142,39 +147,74 @@ button .material-symbols-rounded {
 
 .controls button:active, .controls button:active:focus, button#btn-resolve:active, button#btn-resolve:active:focus {
     box-shadow: none;
-    background-color: #0ee3f8;
+    background-color: #13cc99;
     top: 1px;
 }
 
 .controls button:hover {
-    background-color: #1cb9c8;
+    background-color: #228c6f;
 }
 
 .controls button:not(:last-child) {
-    margin-right: 12px;
+    margin-right: 3px;
 }
 
 button#btn-resolve {
     display: block;
     margin: 0 auto;
     text-transform: uppercase;
-    font-size: 1.8rem;
+    font-size: 1.6rem;
     padding: 12px 30px;
-    border-radius: 6px;
+    /* border-radius: 6px; */
     letter-spacing: 1px;
     width: 70%;
+    background-color: #2d6f76;
+}
+
+button#btn-resolve:hover {
     background-color: #4fb2bc;
 }
 
+button#btn-resolve:active, button#btn-resolve:active:focus {
+    background-color: #18c8da;
+}
+
 input#input-number {
-    border-radius: 6px;
+    border-radius: 1px;
     width: 100%;
     font-size: 3rem;
     text-align: right;
-    padding: 12px 0;
+    padding: 12px;
     background-color: #fcfcfc;
 }
+
+input#input-number:focus {
+    outline: none;
+}
+
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+input[type=number] { -moz-appearance:textfield; }
 
 .rotate {
     transform: rotate(-60deg);
 }
+
+#btn-reset {
+    flex: 0 48px;
+    font-size: 3rem;
+    line-height: 48px;
+    background-color: #531d34;
+}
+
+#btn-reset:hover {
+   background-color: #a7255a; 
+}
+
+#btn-reset:active {
+    background-color: #DB1266; 
+ }

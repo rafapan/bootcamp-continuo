@@ -1,14 +1,36 @@
 var operando = 0;
-var getNumber = () => parseInt(document.getElementById("input-number").value);
 var operacion = "";
+var resultado = 0;
+var getNumber = () => parseInt(document.getElementById("input-number").value);
 var resultadoFinal = () => parseInt((document.getElementById("result").innerText = resultado));
 
-var resultado = 0;
-console.log(resultado);
-console.log(typeof(resultado));
-console.log(getNumber());
-console.log(typeof(getNumber()));
+// Calculos
 
+function sumar() {
+  comprobarOperando();
+  getResultadoParcial(operacion);
+  operacion = "+";
+}
+
+function restar() {
+  comprobarOperando();
+  getResultadoParcial(operacion);
+  operacion = "-";
+}
+
+function multiply() {
+  comprobarOperando();
+  getResultadoParcial(operacion);
+  operacion = "*";
+}
+
+function divide() {
+  comprobarOperando();
+  getResultadoParcial(operacion);
+  operacion = "/";
+}
+
+// Según la operacion seleccionada pasamos el parámetro que indicará si debe sumar, restar, multiplicar o dividir.
 
 function getResultadoParcial(operacion) {
   switch (operacion) {
@@ -29,56 +51,18 @@ function getResultadoParcial(operacion) {
   }
   resetOperacion();
 }
-function resetOperacion() {
-  document.getElementById("input-number").value = "";
-  document.getElementById("input-number").focus();
-  operacion = "";
-}
 
-// function sumar() {
-//   console.log(resultado);
-//   console.log(typeof(resultado));
+// Comprobamos si el usuario al introducir un valor quiere calcular o no a partir del resultado anterior. Si introduce un número antes de la operación consideramos que es una nueva operación e ignora el resultado anterior.
 
-//   operando = parseInt(document.getElementById("input-number").value);
-//   getResultadoParcial(operacion);
-//   operacion = "+";
-// }
-
-function sumar() {
-  console.log(getNumber());
-  console.log(typeof(getNumber()));
+function comprobarOperando() {
   if (isNaN(getNumber())) {
-    operando = parseInt((document.getElementById("result").innerText));
-    console.log(operando);
-    getResultadoParcial(operacion);
-    operacion = "+";
+    operando = resultadoFinal(); 
   } else {
-    operando = parseInt(document.getElementById("input-number").value);
-    console.log(operando);
-    getResultadoParcial(operacion);
-    operacion = "+";
+    operando = getNumber();
   }
 }
 
-
-function restar() {
-  operando = parseInt(document.getElementById("input-number").value);
-  getResultadoParcial(operacion);
-  operacion = "-";
-}
-
-function multiply() {
-  operando = parseInt(document.getElementById("input-number").value);
-  getResultadoParcial(operacion);
-  operacion = "*";
-}
-
-function divide() {
-  operando = parseInt(document.getElementById("input-number").value);
-  getResultadoParcial(operacion);
-  operacion = "/";
-}
-
+// Calcular resultado
 function result() {
   operando = getNumber();
   getResultadoParcial(operacion);
@@ -88,26 +72,22 @@ function result() {
   } else {
     resultadoFinal();
   }
-
-  resetResultado();
-
-  console.log(resultado);
-  console.log(typeof(resultado));
 }
 
 function reset () {
   document.getElementById("input-number").value = "";
   document.getElementById("result").innerText = "0";
   resetOperacion();
-  resetResultado();
-  console.log(resultado);
-  console.log(operacion);
-  console.log(typeof(resultado));
 }
 
-function resetResultado () {
-  resultado = parseInt(document.getElementById("result").innerText);
+// Limpiamos y hacemos foco en el input-number
+
+function resetOperacion() {
+  document.getElementById("input-number").value = "";
+  document.getElementById("input-number").focus();
+  operacion = "";
 }
+
 
 document.getElementById("btn-add").addEventListener("click", sumar);
 document.getElementById("btn-restar").addEventListener("click", restar);
