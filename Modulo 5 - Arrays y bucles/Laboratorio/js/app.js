@@ -132,16 +132,15 @@ console.log(
   "color: red; font-weight: bold"
 );
 function aplicarDto() {
-    if (total > 100) {
-        total = total * 0.95;
-        console.log("El precio con un 5% de dto. es: " + total + " €");
-    } else {
-        console.log("El precio final (sin dto.) es: " + total + " €");
-    }
+  if (total > 100) {
+    total = total * 0.95;
+    console.log("El precio con un 5% de dto. es: " + total + " €");
+  } else {
+    console.log("El precio final (sin dto.) es: " + total + " €");
+  }
 }
 
 aplicarDto();
-
 
 console.log("----");
 console.log(
@@ -150,19 +149,19 @@ console.log(
 );
 
 
-// document.getElementById("carritolist").innerHTML = "<li></li>";
-
-function mostrarObjetosArrayDOM() {
-    for (objeto of carrito) {
-      imprimirAtributo(objeto);
+function pintarDOM() {
+  let cadenaString = "";
+  for (producto of carrito) {
+    cadenaString = cadenaString + "<ul>";
+    for (propiedad in producto) {
+      cadenaString =
+        cadenaString +
+        ("<li>" + propiedad + ": " + producto[propiedad] + "</li>");
     }
+    cadenaString = cadenaString + "</ul> ";
   }
-  
-var imprimirAtributo = (producto) => document.getElementById("carritolist").innerHTML = "<li>" + dato + ": " + producto[dato] + "</li>";
-  
-  mostrarObjetosArrayDOM(); 
 
-//   for (i = 0; i < carrito.length; i++) {
-//     const objeto1 = carrito[i];
-//     document.getElementById("carritolist").innerHTML = "<li>" + i + ": " + producto[i] + "</li>";
-//   }
+  document.getElementById("carritolist").innerHTML = cadenaString;
+}
+
+pintarDOM();
