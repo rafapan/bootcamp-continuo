@@ -219,3 +219,29 @@ let hotelHtml = [
   { hoteId: 4, hotelName: "Hotel 4", availableRooms: 30, price: 10 },
   { hoteId: 5, hotelName: "Hotel 5", availableRooms: 10, price: 8.1 },
 ];
+
+var getName = () => document.getElementById("textBox").value; 
+
+function comprobarHotel() {
+  let existe = false;
+  getName();
+  for (hotel of hotelHtml) {
+    if (getName() == hotel.hotelName) {
+      existe = true;
+    }
+  }
+  return existe;
+}
+
+function consoleExiste() {
+  comprobarHotel();
+
+  if (comprobarHotel() == true) {
+    console.log('El hotel "' + getName() + '" SÍ existe');
+  } else {
+    console.log('El hotel "' + getName() + '" NO existe');
+  }
+}
+
+document.getElementById("myButton").addEventListener("click", consoleExiste);
+
