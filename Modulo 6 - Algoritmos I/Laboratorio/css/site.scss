@@ -1,0 +1,27 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    .item-product {
+        flex: 0 1 70%;
+    }
+    .item-price {
+        flex: 1;
+        max-width: 300px;
+    }
+
+    .product-unit {
+        flex: 1;
+    }
+}
+
+.result-bill {
+    > div {
+        display: flex;
+        justify-content: space-between;
+    }
+}
