@@ -146,6 +146,13 @@ var validateInput = (id, validationFunction) => {
     return valid;
 }
 
+var inputs = {
+    fullname: () => ("fullname", isValidFullName),
+    birthday: () => ("birthday", isValidDate),
+    dni: () => ("dni", isValidDNI),
+    mobile: () => ("mobile", isValidMobile) 
+}
+
 var validateForm = (event) => {
     event.preventDefault(); // No hagas lo que suponías que ibas a hacer. Evita que el boton submit envíe datos al servidor
 
@@ -154,17 +161,20 @@ var validateForm = (event) => {
     // validateDNI();
     // validateMobile();
 
-    validateInput("fullName", isValidFullName);
-    validateInput("birthday", isValidDate);
-    validateInput("dni", isValidDNI);
-    validateInput("mobile", isValidMobile);
+    for (var id in inputs) {
+        inputs[id]();
+    }
 };
 
 
 //  Events
 
 // document.getElementById("register").addEventListener("submit", validateForm);
-document.getElementById("fullName").addEventListener("change", () => validateInput("fullName", isValidFullName));
-document.getElementById("fullName").addEventListener("change", () => validateInput("birthday", isValidDate));
-document.getElementById("fullName").addEventListener("change", () => validateInput("dni", isValidDNI));
-document.getElementById("fullName").addEventListener("change", () => validateInput("mobile", isValidMobile));
+// document.getElementById("fullName").addEventListener("change", () => validateInput("fullName", isValidFullName));
+// document.getElementById("fullName").addEventListener("change", () => validateInput("birthday", isValidDate));
+// document.getElementById("fullName").addEventListener("change", () => validateInput("dni", isValidDNI));
+// document.getElementById("fullName").addEventListener("change", () => validateInput("mobile", isValidMobile));
+
+for (var id in inputs) {
+    document.getElementById(id).addEventListener("change", inputs[id]);
+}
