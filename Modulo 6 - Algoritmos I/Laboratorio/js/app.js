@@ -131,30 +131,17 @@ var total = (productList) => {
 };
 
 var calculate = () => {
-  document.getElementById("subtotal").innerText = subtotal(products) + " €";
-  document.getElementById("taxes").innerText = IVA(products) + "€";
-  document.getElementById("total").innerText = total(products).toFixed(2) + "€";
+  document.getElementById("subtotal").innerText = subtotal(products).toFixed(2) + " €";
+  document.getElementById("taxes").innerText = IVA(products).toFixed(2) + " €";
+  document.getElementById("total").innerText = total(products).toFixed(2) + " €";
 };
-
 document.getElementById("calculate").addEventListener("click", calculate);
 
 // Extra: Intenta hacer que el botón Calcular se habilite o deshabilite en función de si el usuario ha elegido al menos 1 unidad de algún producto o no
 
-// var isproductAdded = (productList) => {
-//   var numberobjects = 0;
-//   for (object of productList) {
-//       numberobjects += object.units;
-//   };
-//   if (numberobjects > 0) {
-//     document.getElementById("calculate").disabled = false;
-//   } else {
-//     document.getElementById("calculate").disabled = true;
-//   };
-// }
-
 // document.getElementById("comprobar").addEventListener("click", isproductAdded(products));
 
-var isproductAdded = () => {
+var isAdded = () => {
   var numberobjects = 0;
   var input = document.getElementById("calculate");
   for (object of products) {
@@ -168,12 +155,11 @@ var isproductAdded = () => {
   return input.disabled;
 };
 
+// Ejecutamos la función para que de primeras reconozca si el botón debe está activo o desactivado∫
+isAdded(products);
 
-
-let allProductUnits = document.getElementsByClassName('product-unit');
-for (let i = 0; i < allProductUnits.length; i++) {
-  allProductUnits[i].addEventListener("focus", isproductAdded);
-  allProductUnits[i].addEventListener("keyDown", isproductAdded);
-  allProductUnits[i].addEventListener("keyUp", isproductAdded);
-  allProductUnits[i].addEventListener("keyPress", isproductAdded);
+// vamos a decirle que nos localice todos los inputs con la clase .product-unit y que los recorra todos y añada el evento de que cuando haya un cambio ejecute la funcion isproductAdded
+let allUnits = document.getElementsByClassName('product-unit');
+for (let i = 0; i < allUnits.length; i++) {
+  allUnits[i].addEventListener("change", isAdded);
 }
