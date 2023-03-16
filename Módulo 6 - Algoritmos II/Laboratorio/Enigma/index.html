@@ -5,9 +5,24 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Enigma</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        body > *:not(:last-child) {
+            margin-bottom: 30px;
+        }
+
+        button {
+        width: 300px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
-<body style="display: flex; flex-direction: column;">
-    <textarea name="" id="text1" cols="30" rows="10"></textarea>
+<body>
+    <textarea name="" id="text1" cols="30" rows="10" placeholder="Escribe aquí"></textarea>
     <button type="button" id="btn-encrypt">Encrypt</button>
     <button type="button" id="btn-decrypt">Decrypt</button>
     <textarea name="" id="text2" cols="30" rows="10"></textarea>
