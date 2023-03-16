@@ -26,12 +26,12 @@ var bubbleSort = (array) => {
   var size = array.length;
   // como voy a necesitar la longitud del array varias veces lo voy a meter en una variable para no tener que escribirlo siemppre
   for (var index = 1; index < size; index++) {
-    console.log("Iteración: ", index);
+    // console.log("Iteración: ", index);
     for (var left = 0; left < size - index; left++) {
       var right = left + 1;
       if (array[left] > array[right]) swap(array, left, right);
       // Así hace una pasada y va empujando el elemento mayor hasta el final, cuando ya en la última pasada el número de la izquierda es menor que el último, sale de este bucle y empieza de nuevo. Así va colocando los mayores de uno a uno hacía la derecha.
-      console.log("Array: ", array);
+      // console.log("Array: ", array);
     }
   }
   return array;
