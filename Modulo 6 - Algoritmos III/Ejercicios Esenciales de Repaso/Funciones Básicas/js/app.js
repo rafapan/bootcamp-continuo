@@ -1,5 +1,5 @@
 console.log(
-    "%c Ejercicios Esenciales de Repaso",
+    "%cEjercicios Esenciales de Repaso",
     "color: blue; font-weight: bold; text-transform: uppercase"
   );
 console.log("----");
