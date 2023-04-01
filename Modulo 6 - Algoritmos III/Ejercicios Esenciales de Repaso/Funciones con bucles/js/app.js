@@ -109,7 +109,7 @@ getElements(myString);
 
 console.log("----");
 console.log(
-  "%c6º Implementa una función que dado un array de cualquier tipo, lo recorra desde el último elemento al primero, y lo muestre por consola.",
+  "%c7º Implementa una función que dado un array de cualquier tipo, lo recorra desde el último elemento al primero, y lo muestre por consola.",
   "color: red; font-weight: bold"
 );
 
@@ -122,7 +122,7 @@ getElementsReverse(myString);
 
 console.log("----");
 console.log(
-  "%c7º Implementa una función que dado un array de números, y otro parámetro que sea un número, diga cuantos elementos son menores a dicho número, y cuántos no.",
+  "%c8º Implementa una función que dado un array de números, y otro parámetro que sea un número, diga cuantos elementos son menores a dicho número, y cuántos no.",
   "color: red; font-weight: bold"
 );
 
@@ -145,7 +145,7 @@ getNumberMajorMinor(myArray, n);
 
 console.log("----");
 console.log(
-  "%c8º Implementa una función que admita 2 arrays como argumento, y diga si el elemento del primero, se encuentra en el segundo.",
+  "%c9º Implementa una función que admita 2 arrays como argumento, y diga si el elemento del primero, se encuentra en el segundo.",
   "color: red; font-weight: bold"
 );
 
@@ -172,7 +172,7 @@ getTheSame(myArray1, myArray2);
 
 console.log("----");
 console.log(
-  "%c9º Implementa una función que admita 2 arrays como argumento, y intercambia los elementos del primero en el segundo y viceversa. Muestra los arrays transformados por consola.",
+  "%c10º Implementa una función que admita 2 arrays como argumento, y intercambia los elementos del primero en el segundo y viceversa. Muestra los arrays transformados por consola.",
   "color: red; font-weight: bold"
 );
 
@@ -195,7 +195,7 @@ swapArray(arrayNine1, arrayNine2);
 
 console.log("----");
 console.log(
-  "%c10º Implementa una función que admita un array como argumento, y construya un objeto en el que almacene cada uno de los elementos del array en propiedades indexadas, del tipo ‘prop1’, ‘prop2’, ‘prop3’, etc",
+  "%c11º Implementa una función que admita un array como argumento, y construya un objeto en el que almacene cada uno de los elementos del array en propiedades indexadas, del tipo ‘prop1’, ‘prop2’, ‘prop3’, etc",
   "color: red; font-weight: bold"
 );
 
@@ -211,7 +211,7 @@ console.log(arrayToObject(["hola", "adios"]));
 
 console.log("----");
 console.log(
-  "%c11º Implementa una función que admita un array y un número, y empieza a recorrer dicho array por el número dado. Muestra por consola cada elemento por el que iteres.",
+  "%c12º Implementa una función que admita un array y un número, y empieza a recorrer dicho array por el número dado. Muestra por consola cada elemento por el que iteres.",
   "color: red; font-weight: bold"
 );
 
@@ -227,7 +227,7 @@ nElements(arrayNine1, numElements);
 
 console.log("----");
 console.log(
-  "%c12º Implementa una función que dado un array de strings y otro parámetro como string diga si existe en el array.",
+  "%c13º Implementa una función que dado un array de strings y otro parámetro como string diga si existe en el array.",
   "color: red; font-weight: bold"
 );
 
@@ -275,11 +275,45 @@ console.log(
 let text = "hola caracola";
 
 let inverse = (msg) => {
-    for (let index = 0; index < msg.length; index++) {
-        console.log(msg.shift());
-        console.log(temp);
+  var temp = "";
+    for (let a = msg.length - 1; a >= 0; a--) {
+      temp += msg[a];
     }
+    console.log(temp);
 }
 
+inverse(text);
 
-inverse(text)
+console.log("----");
+console.log(
+  "%c15º Implementa una función que admita un texto por parámetro y lo devuelva en formato 'EsTe Es Mi TeXtO'.",
+  "color: red; font-weight: bold"
+);
+
+let showFormat = msg => {
+  var temp = "";
+  for (let index = 0; index < msg.length; index++) {
+    temp += index % 2 === 0 ? msg[index].toUpperCase() : msg[index];
+  }
+  console.log(temp);
+}
+
+showFormat("hola");
+
+console.log("----");
+console.log(
+  "%c16º Implementa una función que admita como parámetro un array de arrays. La función debe recorrer todos los elementos de cada subarray y mostrarlos por consola.",
+  "color: red; font-weight: bold"
+);
+
+var myArray3 = [["hola caracola"], [1, 2, 3, 4], "hola"]
+
+let arraySubarray = array => {
+  for (let subArr of array) {
+    for (let element of subArr) {
+      console.log(element);
+    }
+  }
+}
+
+arraySubarray(myArray3);
