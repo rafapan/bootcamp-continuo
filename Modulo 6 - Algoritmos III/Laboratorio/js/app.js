@@ -98,7 +98,6 @@ console.log(
   "color: red; font-weight: bold; text-transform: uppercase"
 );
 
-
 var halfDiamond = (n, char) => {
   for (let i = 0; i < n; i++) {
     let columns = 0;
@@ -122,9 +121,38 @@ var halfDiamond = (n, char) => {
 
 halfDiamond(3, "*");
 
-
 console.log("----");
 console.log(
   "%cPirámide",
   "color: red; font-weight: bold; text-transform: uppercase"
 );
+
+var pyramid = (n, char) => {
+  let space = " ";
+
+
+  for (let i = n - 1; i >= 0; i--) {
+    let width = n + n - 1;
+    let columns = 0;
+    let colCha = "";
+    let rightStars = n + i;
+    while (columns < n) {
+      if (columns < i) {
+        colCha += space;
+      } else {
+        colCha += char
+      }
+      columns++;
+    }
+    while (rightStars < width) {
+      colCha += char;
+      rightStars++;
+    }
+    console.log(colCha);
+  }
+  
+};
+
+pyramid(5, "*");
+
+
