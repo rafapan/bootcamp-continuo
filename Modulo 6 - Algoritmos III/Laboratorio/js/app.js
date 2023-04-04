@@ -60,7 +60,7 @@ var squareDiagonalLR = (n, charDiagonal, charUp, charDown) => {
       }
       columns++;
     }
-    console.log(i + 1 + "    " + colCha);
+    console.log(colCha);
   }
 };
 
@@ -86,7 +86,7 @@ var squareDiagonalRL = (n, charDiagonal, charUp, charDown) => {
       }
       columns++;
     }
-    console.log(i + 1 + "    " + colCha);
+    console.log(colCha);
   }
 };
 
@@ -106,7 +106,7 @@ var halfDiamond = (n, char) => {
       colCha += char;
       columns++;
     }
-    console.log(i + 1 + "    " + colCha);
+    console.log(colCha);
   }
   for (let down = 0; down < n - 1; down++) {
     let columns = n;
@@ -115,7 +115,7 @@ var halfDiamond = (n, char) => {
       colCha += char;
       columns--;
     }
-    console.log(down + "    " + colCha);
+    console.log(colCha);
   }
 };
 
@@ -130,6 +130,37 @@ console.log(
 var pyramid = (n, char) => {
   let space = " ";
 
+  for (let i = n - 1; i >= 0; i--) {
+    let width = n + n - 1;
+    let columns = 0;
+    let colCha = "";
+    let rightStars = n + i;
+    while (columns < n) {
+      if (columns < i) {
+        colCha += space;
+      } else {
+        colCha += char;
+      }
+      columns++;
+    }
+    while (rightStars < width) {
+      colCha += char;
+      rightStars++;
+    }
+    console.log(colCha);
+  }
+};
+
+pyramid(5, "*");
+
+console.log("----");
+console.log(
+  "%cDiamante",
+  "color: red; font-weight: bold; text-transform: uppercase"
+);
+
+var diamond = (n, char) => {
+  let space = " ";
 
   for (let i = n - 1; i >= 0; i--) {
     let width = n + n - 1;
@@ -140,7 +171,7 @@ var pyramid = (n, char) => {
       if (columns < i) {
         colCha += space;
       } else {
-        colCha += char
+        colCha += char;
       }
       columns++;
     }
@@ -150,9 +181,25 @@ var pyramid = (n, char) => {
     }
     console.log(colCha);
   }
-  
+  for (let i = 0; i < n - 1; i++) {
+    let columns = 0;
+    let colCha = "";
+    let rightStars = 0;
+    let width = n - (i + 2);
+    while (columns < n) {
+      if (columns < i + 1){
+        colCha += space;
+      } else {
+        colCha += char;
+      }
+      columns++;
+    }
+    while (rightStars < width) {
+      colCha += char;
+      rightStars++;
+    }
+    console.log(colCha)
+  }
 };
 
-pyramid(5, "*");
-
-
+diamond(5, "*");
