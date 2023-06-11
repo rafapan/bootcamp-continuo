@@ -576,7 +576,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getFullName", ()=>getFullName);
 parcelHelpers.export(exports, "getUserNode", ()=>getUserNode);
-const AvatarBusiness = require("e4445e25611f15c0");
+const AvatarBusiness = require("b7e53f0be9cb5cb3");
 function getFullName(user) {
     return user.login;
 }
@@ -587,7 +587,7 @@ function getUserNode(user) {
     return node;
 }
 
-},{"e4445e25611f15c0":"lkNln","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lkNln":[function(require,module,exports) {
+},{"b7e53f0be9cb5cb3":"lkNln","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lkNln":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getAvatar", ()=>getAvatar);
