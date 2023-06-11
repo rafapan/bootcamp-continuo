@@ -39,4 +39,19 @@ const createParagraph = (text) => {
   element.append(text);
   return element;
 };
-export { createCharacterRow, showCharacter };
+
+const createEpisodeRow = (episode) => {
+  const element = document.createElement("div");
+  element.append(episode.episode);
+  element.append(episode.name);
+  return element;
+};
+
+const createLocationRow = (location) => {
+  const element = document.createElement("div");
+  element.append(location.dimension);
+  element.append(location.name);
+  return element;
+};
+
+export { createCharacterRow, showCharacter, createEpisodeRow, createLocationRow };

@@ -577,12 +577,35 @@ _dataBusiness.getCharacter().then((data)=>{
     }
     for (let node of nodes)document.getElementById("root").append(node);
 });
+_dataBusiness.getEpisodes().then((data)=>{
+    document.getElementById("episodes").innerText = ""; // Para limpiar lo que ya hay en el html
+    console.log(data);
+    // const episode = data;
+    const nodes = [];
+    for (item of data){
+        const node = _utilsJs.createEpisodeRow(item);
+        // console.log(node);
+        nodes.push(node);
+    }
+    for (let node of nodes)document.getElementById("episodes").append(node);
+});
+_dataBusiness.getLocation().then((data)=>{
+    document.getElementById("location").innerText = ""; // Para limpiar lo que ya hay en el html
+    const nodes = [];
+    for (item of data){
+        const node = _utilsJs.createLocationRow(item);
+        nodes.push(node);
+    }
+    for (let node of nodes)document.getElementById("location").append(node);
+});
 
 },{"./data-business":"iM7Bx","./utils.js":"6IOkp","./styles.css":"lW6qc"}],"iM7Bx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "getCharacter", ()=>getCharacter);
 parcelHelpers.export(exports, "getCharacterByIdid", ()=>getCharacterByIdid);
+parcelHelpers.export(exports, "getEpisodes", ()=>getEpisodes);
+parcelHelpers.export(exports, "getLocation", ()=>getLocation);
 function getCharacter() {
     return fetch("https://rickandmortyapi.com/api/character").then((response)=>{
         return response.json();
@@ -596,6 +619,21 @@ function getCharacterByIdid(id) {
         return response.json();
     }).then((data)=>{
         return data;
+    });
+}
+function getEpisodes() {
+    return fetch("https://rickandmortyapi.com/api/episode/").then((response)=>{
+        return response.json();
+    }).then((data)=>{
+        return data.results;
+    });
+}
+function getLocation() {
+    return fetch("https://rickandmortyapi.com/api/location/").then((response)=>{
+        return response.json();
+    }).then((data)=>{
+        console.log(data);
+        return data.results;
     });
 }
 
@@ -634,6 +672,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "createCharacterRow", ()=>createCharacterRow);
 parcelHelpers.export(exports, "showCharacter", ()=>showCharacter);
+parcelHelpers.export(exports, "createEpisodeRow", ()=>createEpisodeRow);
+parcelHelpers.export(exports, "createLocationRow", ()=>createLocationRow);
 const createCharacterRow = (character)=>{
     const element = document.createElement("div");
     const avatar = createAvatar(character);
@@ -673,6 +713,18 @@ const showCharacter = (character)=>{
 const createParagraph = (text)=>{
     const element = document.createElement("p");
     element.append(text);
+    return element;
+};
+const createEpisodeRow = (episode)=>{
+    const element = document.createElement("div");
+    element.append(episode.episode);
+    element.append(episode.name);
+    return element;
+};
+const createLocationRow = (location)=>{
+    const element = document.createElement("div");
+    element.append(location.dimension);
+    element.append(location.name);
     return element;
 };
 

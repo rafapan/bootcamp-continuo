@@ -15,4 +15,21 @@ function getCharacterByIdid(id) {
   });
 }
 
-export { getCharacter, getCharacterByIdid };
+function getEpisodes() {
+  return fetch("https://rickandmortyapi.com/api/episode/").then((response) => {
+    return response.json();
+  }).then(data => {
+    return data.results;
+  });
+};
+
+function getLocation() {
+  return fetch("https://rickandmortyapi.com/api/location/").then((response) => {
+    return response.json();
+  }).then(data => {
+    console.log(data)
+    return data.results;
+  });
+}
+
+export { getCharacter, getCharacterByIdid, getEpisodes, getLocation };
