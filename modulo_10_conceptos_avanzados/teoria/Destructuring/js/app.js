@@ -93,3 +93,17 @@ const lemoncode = {
 };
 const getFirstTeacher = ({ teachers: [first] }) => first;
 console.log(getFirstTeacher(lemoncode));
+
+// COMBINANDO DESTRCUTURING Y REST
+const sampleArray = ["uno", 2, true];
+const [firstItem, ...restItems] = sampleArray; //Voy a capturar el primer elemento con firstItem y que el resto de elementos de ese array me los agrupas y me lo das como un array nuevo
+console.log(firstItem, restItems);
+
+// con objetos
+const sampleObject = {
+  id2: 43,
+  name: "Javi",
+  age: 36,
+};
+const { id2, ...rest } = sampleObject;
+console.log(rest);
