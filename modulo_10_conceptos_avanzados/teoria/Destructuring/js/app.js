@@ -13,7 +13,6 @@ const [first, , third] = teachers;
 
 console.log(primero, segundo, tercero);
 console.log(first, third);
-
 const teachers2 = ["Javi", "Lissette", "Jaime", "Victor", "Dani"];
 const getSecondTeacher = ([, second]) => second;
 console.log(getSecondTeacher(teachers2));
