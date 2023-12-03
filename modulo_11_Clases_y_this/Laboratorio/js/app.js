@@ -27,24 +27,19 @@ class booking {
     this._subtotal = 0;
     this._total = 0;
     this._discount = 0;
-    this._listaPreciosHabitaciones = 0;
+    this._PreciosHabitaciones = 0;
   }
-
 
   priceTypeRoom(typeRoom) {
-    let precio = 0;
+    let precioHab = 0
     switch (typeRoom) {
       case "standard":
-        return precio = 100;
+        return precioHab = 100;
       case "suite":
-        return precio = 150;
-      default:
+        return precioHab = 150;
     }
   }
-  
-  set precioHabitacion(precio) {
-    this._listaPreciosHabitaciones = this.priceTypeRoom(precio);
-  }
+
 
   calculoPax(guests) {
     // if (guests > 1) {
@@ -56,7 +51,7 @@ class booking {
 
     return guests > 1 ? (guests - 1) * 40 : 0;
   }
-// Añadimos un campo a cada reserva en el que indicamos si el desayuno está incluido o no: en caso de estar incluido supone un cargo adicional de 15 € por persona y noche.
+  // Añadimos un campo a cada reserva en el que indicamos si el desayuno está incluido o no: en caso de estar incluido supone un cargo adicional de 15 € por persona y noche.
   calculoDesayuno(breakfast) {
     return breakfast === true ? 15 : 0;
   }
@@ -74,14 +69,14 @@ class booking {
 
   calculoTotal() {
     this.calculoSubtotal();
-    this._total = this._subtotal * 1.21;
+    this._total = this._subtotal * 1.21 + this._total * this._discount;
   }
 
   get subtotal() {
     return this._subtotal;
   }
   get total() {
-    return this._total + (this._total * this._discount);
+    return this._total;
   }
 
   set reservas(externalReserve) {
@@ -100,15 +95,16 @@ class clienteParticular extends booking {
 class bookingTourOperador extends booking {
   constructor() {
     super();
-    this._priceTypeRoom = 100;
+    this._listaPreciosHabitaciones = 100;
     this._discount = 0.15;
   }
   calculoSubtotal() {
     this._subtotal = reservas.reduce(
-      (acc, { noches, pax }) =>
+      (acc, { noches, pax, desayuno }) =>
         acc +
-        noches * this._priceTypeRoom + //Todas las habitaciones tienen el mismo precio (100 €)
-        this.calculoPax(pax),
+        noches * this._listaPreciosHabitaciones +
+        this.calculoPax(pax) +
+        this.calculoDesayuno(desayuno) * pax * noches,
       0
     );
   }
