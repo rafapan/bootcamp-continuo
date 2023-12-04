@@ -26,17 +26,19 @@ class booking {
     this._reservation = [];
     this._subtotal = 0;
     this._total = 0;
-    this._discount = 0;
-    this._PreciosHabitaciones = 0;
+    this._discount = 0; //En la clase padre ya preveemos que pueden haber casos con descuentos
+    this._listaHabitaciones = {
+      standard: 100,
+      suite: 150,
+    };
   }
 
   priceTypeRoom(typeRoom) {
-    let precioHab = 0
     switch (typeRoom) {
       case "standard":
-        return precioHab = 100;
+        return this._listaHabitaciones.standard;
       case "suite":
-        return precioHab = 150;
+        return this._listaHabitaciones.suite;
     }
   }
 
@@ -49,11 +51,12 @@ class booking {
     // }
     // return guests;
 
-    return guests > 1 ? (guests - 1) * 40 : 0;
+    return guests > 1 ? (guests - 1) * 40 : 0; //Por cada persona adicional sumarle 40 € al precio de cada noche.
   }
   // Añadimos un campo a cada reserva en el que indicamos si el desayuno está incluido o no: en caso de estar incluido supone un cargo adicional de 15 € por persona y noche.
   calculoDesayuno(breakfast) {
-    return breakfast === true ? 15 : 0;
+    return breakfast === true ? 15 : 0; //Añadimos un campo a cada reserva en el que indicamos si el desayuno está incluido o no: en caso de estar incluido supone un cargo adicional de 15 € por persona y noche.
+    
   }
 
   calculoSubtotal() {
@@ -62,14 +65,15 @@ class booking {
         acc +
         noches * this.priceTypeRoom(tipoHabitacion) +
         this.calculoPax(pax) +
-        this.calculoDesayuno(desayuno) * pax * noches,
+        this.calculoDesayuno(desayuno) * pax * noches, //Añadimos un campo a cada reserva en el que indicamos si el desayuno está incluido o no: en caso de estar incluido supone un cargo adicional de 15 € por persona y noche.
+        
       0
     );
   }
 
   calculoTotal() {
     this.calculoSubtotal();
-    this._total = this._subtotal * 1.21 + this._total * this._discount;
+    this._total = this._subtotal * 1.21 + this._total * this._discount; //En la clase padre ya preveemos que pueden haber casos con descuentos
   }
 
   get subtotal() {
@@ -95,18 +99,11 @@ class clienteParticular extends booking {
 class bookingTourOperador extends booking {
   constructor() {
     super();
-    this._listaPreciosHabitaciones = 100;
-    this._discount = 0.15;
-  }
-  calculoSubtotal() {
-    this._subtotal = reservas.reduce(
-      (acc, { noches, pax, desayuno }) =>
-        acc +
-        noches * this._listaPreciosHabitaciones +
-        this.calculoPax(pax) +
-        this.calculoDesayuno(desayuno) * pax * noches,
-      0
-    );
+    this._discount = 0.15; //Adicionalmente se le aplica un 15 % de descuento a los servicios contratados.
+    this._listaHabitaciones = { //Todas las habitaciones tienen el mismo precio 100 €
+      standard: 100,
+      suite: 100,
+    };
   }
 }
 
