@@ -1966,7 +1966,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.isValidLogin = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-var url = "".concat(undefined, "/login");
+var url = "".concat("http://localhost:3000/api", "/login");
 
 // métodos axios
 // get - obtener datos
@@ -6886,7 +6886,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61812" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59846" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
