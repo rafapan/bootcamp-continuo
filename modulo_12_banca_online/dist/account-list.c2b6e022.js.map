@@ -1,0 +1,1 @@
+{"version":3,"sources":["pages/account-list/account-list.js"],"names":["console","log"],"mappings":"AAAAA,OAAO,CAACC,GAAG,CAAC,mBAAmB,CAAC","file":"account-list.c2b6e022.js","sourceRoot":"../src","sourcesContent":["console.log('account-list page')"]}
