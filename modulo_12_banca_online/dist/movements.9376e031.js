@@ -4332,7 +4332,6 @@ if (getParamsAccount) {
   });
 }
 (0, _movements2.getMovements)().then(function (movements) {
-  var viewModelMovements = (0, _movements3.mapMovementsListFromApiToViewModel)(movements, params.id);
   (0, _movements.addMovementRows)(movements);
 });
 

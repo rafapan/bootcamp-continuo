@@ -24,10 +24,6 @@ if (getParamsAccount) {
 }
 
 getMovements().then((movements) => {
-  const viewModelMovements = mapMovementsListFromApiToViewModel(
-    movements,
-    params.id
-  );
   addMovementRows(movements);
 });
 
