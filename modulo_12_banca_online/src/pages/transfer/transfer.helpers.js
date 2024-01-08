@@ -1,4 +1,4 @@
-const getOption = account => {
+const getOption = (account) => {
   const option = document.createElement('option');
   option.value = account.id;
   option.textContent = account.name;
@@ -8,7 +8,7 @@ const getOption = account => {
 export const setAccountOptions = (accounts, selectedId) => {
   const select = document.getElementById('select-account');
 
-  accounts.forEach(account => {
+  accounts.forEach((account) => {
     const option = getOption(account);
     select.appendChild(option);
   });

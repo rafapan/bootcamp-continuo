@@ -138,5 +138,19 @@
       "accountId": "3"
     }
   ],
-  "transfer": []
+  "transfer": [
+    {
+      "id": 1,
+      "select": 1,
+      "iban": "ES91 2100 0418 4502 0005 1332",
+      "name": "Alerta dirección Agapea",
+      "amount": "200",
+      "concept": "hola",
+      "notes": "",
+      "day": "9",
+      "month": "2",
+      "year": "2024",
+      "email": "rafapanr@gmail.com"
+    }
+  ]
 }
