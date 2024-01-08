@@ -29,18 +29,6 @@ getTransfer().then((accountList) => {
   onSetValues(setAccountOptions(accountList, params.id));
 });
 
-function callTHeDates() {
-  formValidation.validateField('year', transfer.year).then((result) => {
-    onSetError('year', result);
-  });
-  formValidation.validateField('month', transfer.month).then((result) => {
-    onSetError('month', result);
-  });
-  formValidation.validateField('day', transfer.day).then((result) => {
-    onSetError('day', result);
-  });
-}
-
 onUpdateField('select-account', (event) => {
   const value = event.target.value;
   transfer = { ...transfer, select: value };
@@ -87,23 +75,27 @@ onUpdateField('notes', (event) => {
   const value = event.target.value;
   transfer = { ...transfer, notes: value };
 });
+onUpdateField('year', (event) => {
+  const value = event.target.value;
+  transfer = { ...transfer, year: value, date: `${value}-${month}-${day}` };
+  formValidation.validateField('day', transfer.day).then((result) => {
+    onSetError('day', result);
+  });
+});
+onUpdateField('month', (event) => {
+  const value = event.target.value;
+  transfer = { ...transfer, month: value, date: `${year}-${value}-${day}` };
+  formValidation.validateField('month', transfer.month).then((result) => {
+    onSetError('month', result);
+  });
+});
 
 onUpdateField('day', (event) => {
   const value = event.target.value;
-  transfer = { ...transfer, day: value };
-  callTHeDates();
-});
-
-onUpdateField('month', (event) => {
-  const value = event.target.value;
-  transfer = { ...transfer, month: value };
-  callTHeDates();
-});
-
-onUpdateField('year', (event) => {
-  const value = event.target.value;
-  transfer = { ...transfer, year: value };
-  callTHeDates();
+  transfer = { ...transfer, day: value, date: `${year}-${month}-${value}` };
+  formValidation.validateField('day', transfer.day).then((result) => {
+    onSetError('day', result);
+  });
 });
 
 onUpdateField('email', (event) => {
@@ -116,17 +108,17 @@ onUpdateField('email', (event) => {
 
 const validatorDate = (day, month, year) => {
   const dateObject = new Date();
-  const myStringToday =
+  const stringToday =
     dateObject.getMonth() -
     1 +
     '/' +
     dateObject.getDate() +
     '-' +
     dateObject.getFullYear();
-  const myToday = new Date(myStringToday);
+  const myToday = new Date(stringToday);
 
-  const myStringDate = month + '-' + day + '-' + year;
-  const myDate = new Date(myStringDate);
+  const stringDate = month + '-' + day + '-' + year;
+  const myDate = new Date(stringDate);
 
   return myDate > myToday ? true : false;
 };

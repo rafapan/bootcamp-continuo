@@ -3,7 +3,7 @@ const today = new Date();
 
 export const myValidatorDay = (theDay) => {
   const { value } = theDay;
-  const myValue = parseInt(value);
+  const parseValue = parseInt(value);
   const result = {
     succeeded: false,
     type: validatorToday,
@@ -14,11 +14,11 @@ export const myValidatorDay = (theDay) => {
   const getYear = document.getElementById('year').value;
 
   if (getYear > today.getFullYear() || getMonth > today.getMonth() + 1) {
-    if (myValue <= 31) {
+    if (parseValue <= 31) {
       result.succeeded = true;
       result.message = '';
     }
-  } else if (myValue > today.getDate() && myValue <= 31) {
+  } else if (parseValue > today.getDate() && parseValue <= 31) {
     result.succeeded = true;
     result.message = '';
   }
@@ -27,7 +27,7 @@ export const myValidatorDay = (theDay) => {
 
 export const myValidatorMonth = (theMonth) => {
   const { value } = theMonth;
-  const myValue = parseInt(value);
+  const parseValue = parseInt(value);
   const result = {
     succeeded: false,
     type: validatorToday,
@@ -38,7 +38,7 @@ export const myValidatorMonth = (theMonth) => {
   if (getYear > today.getFullYear()) {
     result.succeeded = true;
     result.message = '';
-  } else if (myValue >= today.getMonth() + 1 && myValue <= 12) {
+  } else if (parseValue >= today.getMonth() + 1 && parseValue <= 12) {
     result.succeeded = true;
     result.message = '';
   }

@@ -3,7 +3,7 @@ import {
   myValidatorDay,
   myValidatorMonth,
   myValidatorYear,
-} from './transfer.validator.custom';
+} from './trasnfer.custom.validators';
 
 const validationSchema = {
   field: {
@@ -43,7 +43,7 @@ const validationSchema = {
       {
         validator: Validators.pattern,
         customArgs: { pattern: /[0-9]/ },
-        message: 'Introduzca sólo caracteres numéricos',
+        message: 'Cantidad no correcta',
       },
     ],
     concept: [

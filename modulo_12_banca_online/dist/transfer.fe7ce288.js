@@ -2850,7 +2850,7 @@ var index = exports.Validators = {
   maxLength: maxLength,
   array: array
 };
-},{}],"pages/transfer/transfer.validator.custom.js":[function(require,module,exports) {
+},{}],"pages/transfer/trasnfer.custom.validators.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2861,7 +2861,7 @@ var validatorToday = 'Day validations';
 var today = new Date();
 var myValidatorDay = exports.myValidatorDay = function myValidatorDay(theDay) {
   var value = theDay.value;
-  var myValue = parseInt(value);
+  var parseValue = parseInt(value);
   var result = {
     succeeded: false,
     type: validatorToday,
@@ -2870,11 +2870,11 @@ var myValidatorDay = exports.myValidatorDay = function myValidatorDay(theDay) {
   var getMonth = document.getElementById('month').value;
   var getYear = document.getElementById('year').value;
   if (getYear > today.getFullYear() || getMonth > today.getMonth() + 1) {
-    if (myValue <= 31) {
+    if (parseValue <= 31) {
       result.succeeded = true;
       result.message = '';
     }
-  } else if (myValue > today.getDate() && myValue <= 31) {
+  } else if (parseValue > today.getDate() && parseValue <= 31) {
     result.succeeded = true;
     result.message = '';
   }
@@ -2882,7 +2882,7 @@ var myValidatorDay = exports.myValidatorDay = function myValidatorDay(theDay) {
 };
 var myValidatorMonth = exports.myValidatorMonth = function myValidatorMonth(theMonth) {
   var value = theMonth.value;
-  var myValue = parseInt(value);
+  var parseValue = parseInt(value);
   var result = {
     succeeded: false,
     type: validatorToday,
@@ -2892,7 +2892,7 @@ var myValidatorMonth = exports.myValidatorMonth = function myValidatorMonth(theM
   if (getYear > today.getFullYear()) {
     result.succeeded = true;
     result.message = '';
-  } else if (myValue >= today.getMonth() + 1 && myValue <= 12) {
+  } else if (parseValue >= today.getMonth() + 1 && parseValue <= 12) {
     result.succeeded = true;
     result.message = '';
   }
@@ -2920,7 +2920,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.formValidation = void 0;
 var _fonk = require("@lemoncode/fonk");
-var _transferValidator = require("./transfer.validator.custom");
+var _trasnferCustom = require("./trasnfer.custom.validators");
 var validationSchema = {
   field: {
     iban: [{
@@ -2951,7 +2951,7 @@ var validationSchema = {
       customArgs: {
         pattern: /[0-9]/
       },
-      message: 'Introduzca sólo caracteres numéricos'
+      message: 'Cantidad no correcta'
     }],
     concept: [{
       validator: _fonk.Validators.required,
@@ -2964,13 +2964,13 @@ var validationSchema = {
       message: 'Introduzca un concepto correcto'
     }],
     day: [{
-      validator: _transferValidator.myValidatorDay
+      validator: _trasnferCustom.myValidatorDay
     }],
     month: [{
-      validator: _transferValidator.myValidatorMonth
+      validator: _trasnferCustom.myValidatorMonth
     }],
     year: [{
-      validator: _transferValidator.myValidatorYear
+      validator: _trasnferCustom.myValidatorYear
     }],
     email: [{
       validator: _fonk.Validators.required,
@@ -2982,7 +2982,7 @@ var validationSchema = {
   }
 };
 var formValidation = exports.formValidation = (0, _fonk.createFormValidation)(validationSchema);
-},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","./transfer.validator.custom":"pages/transfer/transfer.validator.custom.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","./trasnfer.custom.validators":"pages/transfer/trasnfer.custom.validators.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -6966,17 +6966,6 @@ var params = _router.history.getParams();
 (0, _transfer3.getTransfer)().then(function (accountList) {
   (0, _helpers.onSetValues)((0, _transfer.setAccountOptions)(accountList, params.id));
 });
-function callTHeDates() {
-  _transfer2.formValidation.validateField('year', transfer.year).then(function (result) {
-    (0, _helpers.onSetError)('year', result);
-  });
-  _transfer2.formValidation.validateField('month', transfer.month).then(function (result) {
-    (0, _helpers.onSetError)('month', result);
-  });
-  _transfer2.formValidation.validateField('day', transfer.day).then(function (result) {
-    (0, _helpers.onSetError)('day', result);
-  });
-}
 (0, _helpers.onUpdateField)('select-account', function (event) {
   var value = event.target.value;
   transfer = _objectSpread(_objectSpread({}, transfer), {}, {
@@ -7028,26 +7017,35 @@ function callTHeDates() {
     notes: value
   });
 });
-(0, _helpers.onUpdateField)('day', function (event) {
+(0, _helpers.onUpdateField)('year', function (event) {
   var value = event.target.value;
   transfer = _objectSpread(_objectSpread({}, transfer), {}, {
-    day: value
+    year: value,
+    date: "".concat(value, "-").concat(month, "-").concat(day)
   });
-  callTHeDates();
+  _transfer2.formValidation.validateField('day', transfer.day).then(function (result) {
+    (0, _helpers.onSetError)('day', result);
+  });
 });
 (0, _helpers.onUpdateField)('month', function (event) {
   var value = event.target.value;
   transfer = _objectSpread(_objectSpread({}, transfer), {}, {
-    month: value
+    month: value,
+    date: "".concat(year, "-").concat(value, "-").concat(day)
   });
-  callTHeDates();
+  _transfer2.formValidation.validateField('month', transfer.month).then(function (result) {
+    (0, _helpers.onSetError)('month', result);
+  });
 });
-(0, _helpers.onUpdateField)('year', function (event) {
+(0, _helpers.onUpdateField)('day', function (event) {
   var value = event.target.value;
   transfer = _objectSpread(_objectSpread({}, transfer), {}, {
-    year: value
+    day: value,
+    date: "".concat(year, "-").concat(month, "-").concat(value)
   });
-  callTHeDates();
+  _transfer2.formValidation.validateField('day', transfer.day).then(function (result) {
+    (0, _helpers.onSetError)('day', result);
+  });
 });
 (0, _helpers.onUpdateField)('email', function (event) {
   var value = event.target.value;
@@ -7060,10 +7058,10 @@ function callTHeDates() {
 });
 var validatorDate = function validatorDate(day, month, year) {
   var dateObject = new Date();
-  var myStringToday = dateObject.getMonth() - 1 + '/' + dateObject.getDate() + '-' + dateObject.getFullYear();
-  var myToday = new Date(myStringToday);
-  var myStringDate = month + '-' + day + '-' + year;
-  var myDate = new Date(myStringDate);
+  var stringToday = dateObject.getMonth() - 1 + '/' + dateObject.getDate() + '-' + dateObject.getFullYear();
+  var myToday = new Date(stringToday);
+  var stringDate = month + '-' + day + '-' + year;
+  var myDate = new Date(stringDate);
   return myDate > myToday ? true : false;
 };
 var onSave = function onSave() {

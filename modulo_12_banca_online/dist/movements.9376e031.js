@@ -4332,18 +4332,21 @@ if (getParamsAccount) {
   });
 }
 (0, _movements2.getMovements)().then(function (movements) {
-  var vmMovements = (0, _movements3.mapMovementsListFromApiToViewModel)(movements, params.id);
-  if (params.id === undefined) {
-    (0, _movements.addMovementRows)(movements);
-  } else {
-    var myMovements = function myMovements(vmMovements) {
-      return vmMovements.filter(function (mymoves) {
-        return mymoves !== undefined;
-      });
-    };
-    (0, _movements.addMovementRows)(myMovements(vmMovements));
-  }
+  var viewModelMovements = (0, _movements3.mapMovementsListFromApiToViewModel)(movements, params.id);
+  (0, _movements.addMovementRows)(movements);
 });
+
+// getAccountList().then((accountList) => {
+//   const viewModelAccountList = mapAccountListFromApiToViewModel(accountList);
+//     addAccountRows(viewModelAccountList);
+
+//     viewModelAccountList.forEach(account => {
+//       onUpdateField(`select-${account.id}`, (event) => {
+//           const route = event.target.value;
+//           history.push(route);
+//       })
+//     })
+//   });
 },{"../account/account.api":"pages/account/account.api.js","../../common/helpers":"common/helpers/index.js","./movements.helpers":"pages/movements/movements.helpers.js","./movements.api":"pages/movements/movements.api.js","./movements.mappers":"pages/movements/movements.mappers.js","../../core/router":"core/router/index.js","../account/account.mappers":"pages/account/account.mappers.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';

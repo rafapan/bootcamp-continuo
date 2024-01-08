@@ -24,12 +24,21 @@ if (getParamsAccount) {
 }
 
 getMovements().then((movements) => {
-  const vmMovements = mapMovementsListFromApiToViewModel(movements, params.id);
-  if (params.id === undefined) {
-    addMovementRows(movements);
-  } else {
-    const myMovements = (vmMovements) =>
-      vmMovements.filter((mymoves) => mymoves !== undefined);
-    addMovementRows(myMovements(vmMovements));
-  }
+  const viewModelMovements = mapMovementsListFromApiToViewModel(
+    movements,
+    params.id
+  );
+  addMovementRows(movements);
 });
+
+// getAccountList().then((accountList) => {
+//   const viewModelAccountList = mapAccountListFromApiToViewModel(accountList);
+//     addAccountRows(viewModelAccountList);
+
+//     viewModelAccountList.forEach(account => {
+//       onUpdateField(`select-${account.id}`, (event) => {
+//           const route = event.target.value;
+//           history.push(route);
+//       })
+//     })
+//   });
