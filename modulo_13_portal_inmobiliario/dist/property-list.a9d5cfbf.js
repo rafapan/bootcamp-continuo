@@ -4487,7 +4487,7 @@ Promise.all([(0, _propertyList.getPropertyList)(), (0, _propertyList.getSaleType
     propertyList = _resultList[0],
     saleTypeList = _resultList[1],
     provinceList = _resultList[2];
-  loadPropertyList(propertyList);
+  // loadPropertyList(propertyList);
   (0, _propertyList2.setOptions)(saleTypeList, 'select-sale-type', '¿Qué venta?');
   (0, _propertyList2.setOptions)(provinceList, 'select-province', '¿Dónde?');
   (0, _propertyList2.setOptions)(_propertyList3.roomOptions, 'select-room', '¿Habitaciones?');
@@ -4588,7 +4588,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61128" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56344" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
