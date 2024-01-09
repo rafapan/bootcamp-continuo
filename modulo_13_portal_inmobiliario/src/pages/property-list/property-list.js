@@ -13,11 +13,34 @@ Property {
 }
 */
 
-import { getPropertyList } from './property-list.api';
+import {
+  getPropertyList,
+  getSaleTypeList,
+  getprovincesList,
+} from './property-list.api';
 import { mapPropertyListFromApiToViewModel } from './property-list-mappers';
-import { addPropertyRows } from './property-list.helpers';
+import { addPropertyRows, setOptions } from './property-list.helpers';
 
-getPropertyList().then((propertyList) => {
+// hacemos todas las peticiones a la vez y una vez que esten todas hechas se actua.
+Promise.all([getPropertyList(), getSaleTypeList(), getprovincesList()]).then(
+  (resultList) => {
+    // const propertyList = resultList[0];
+    // const saleTypeList = resultList[1];
+    // const provinceList = resultList[2];
+    const [propertyList, saleTypeList, provinceList] = resultList;
+    loadPropertyList(propertyList);
+    setOptions(saleTypeList, 'select-sale-type', '¿Qué venta?');
+    setOptions(provinceList, 'select-province', '¿Dónde?');
+  }
+);
+
+// getPropertyList().then((propertyList) => {
+//   const viewModelPropertyList = mapPropertyListFromApiToViewModel(propertyList);
+//   addPropertyRows(viewModelPropertyList);
+// });
+// De la siguiente forma creamos un metodo que se cumpla cuando la promisa de todos se haga
+
+const loadPropertyList = (propertyList) => {
   const viewModelPropertyList = mapPropertyListFromApiToViewModel(propertyList);
   addPropertyRows(viewModelPropertyList);
-});
+};

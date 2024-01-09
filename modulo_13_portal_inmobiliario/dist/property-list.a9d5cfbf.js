@@ -1853,13 +1853,25 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPropertyList = void 0;
+exports.getprovincesList = exports.getSaleTypeList = exports.getPropertyList = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var url = "".concat("http://localhost:3000/api", "/properties"); // apunta data.json de server a properties que es donde están los detalles del inmueble
 
 var getPropertyList = exports.getPropertyList = function getPropertyList() {
   return _axios.default.get(url).then(function (response) {
+    return response.data;
+  });
+};
+var saleTypeListUrl = "".concat("http://localhost:3000/api", "/saleTypes");
+var getSaleTypeList = exports.getSaleTypeList = function getSaleTypeList() {
+  return _axios.default.get(saleTypeListUrl).then(function (response) {
+    return response.data;
+  });
+};
+var provincesListUrl = "".concat("http://localhost:3000/api", "/provinces");
+var getprovincesList = exports.getprovincesList = function getprovincesList() {
+  return _axios.default.get(provincesListUrl).then(function (response) {
     return response.data;
   });
 };
@@ -4211,6 +4223,12 @@ var setOptions = exports.setOptions = function setOptions(list, id, defaultValue
 var _propertyList = require("./property-list.api");
 var _propertyListMappers = require("./property-list-mappers");
 var _propertyList2 = require("./property-list.helpers");
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 console.log('property-list funciona');
 
 // qué es lo que vamos a necesitar mostrar en las cards de los inmuebles.
@@ -4226,10 +4244,30 @@ Property {
 }
 */
 
-(0, _propertyList.getPropertyList)().then(function (propertyList) {
+// hacemos todas las peticiones a la vez y una vez que esten todas hechas se actua.
+Promise.all([(0, _propertyList.getPropertyList)(), (0, _propertyList.getSaleTypeList)(), (0, _propertyList.getprovincesList)()]).then(function (resultList) {
+  // const propertyList = resultList[0];
+  // const saleTypeList = resultList[1];
+  // const provinceList = resultList[2];
+  var _resultList = _slicedToArray(resultList, 3),
+    propertyList = _resultList[0],
+    saleTypeList = _resultList[1],
+    provinceList = _resultList[2];
+  loadPropertyList(propertyList);
+  (0, _propertyList2.setOptions)(saleTypeList, 'select-sale-type', '¿Qué venta?');
+  (0, _propertyList2.setOptions)(provinceList, 'select-province', '¿Dónde?');
+});
+
+// getPropertyList().then((propertyList) => {
+//   const viewModelPropertyList = mapPropertyListFromApiToViewModel(propertyList);
+//   addPropertyRows(viewModelPropertyList);
+// });
+// De la siguiente forma creamos un metodo que se cumpla cuando la promisa de todos se haga
+
+var loadPropertyList = function loadPropertyList(propertyList) {
   var viewModelPropertyList = (0, _propertyListMappers.mapPropertyListFromApiToViewModel)(propertyList);
   (0, _propertyList2.addPropertyRows)(viewModelPropertyList);
-});
+};
 },{"./property-list.api":"pages/property-list/property-list.api.js","./property-list-mappers":"pages/property-list/property-list-mappers.js","./property-list.helpers":"pages/property-list/property-list.helpers.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
