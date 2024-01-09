@@ -4203,7 +4203,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getPropertyDetails = void 0;
+exports.insertMessage = exports.getPropertyDetails = exports.getEquipmentList = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var url = "".concat("http://localhost:3000/api", "/properties");
@@ -4212,29 +4212,30 @@ var getPropertyDetails = exports.getPropertyDetails = function getPropertyDetail
     return response.data;
   });
 };
-
-// const equipmentListUrl = `${process.env.BASE_API_URL}/equipments`;
-
-// export const getEquipmentList = () =>
-//   Axios.get(equipmentListUrl).then((response) => {
-//     return response.data;
-//   });
-
-// const messageUrl = `${process.env.BASE_API_URL}/contact`;
-
-// export const insertMessage = (message) =>
-//   Axios.post(`${messageUrl}`, message).then(({ data }) => data);
+var equipmentListUrl = "".concat("http://localhost:3000/api", "/equipments");
+var getEquipmentList = exports.getEquipmentList = function getEquipmentList() {
+  return _axios.default.get(equipmentListUrl).then(function (response) {
+    return response.data;
+  });
+};
+var messageUrl = "".concat("http://localhost:3000/api", "/contact");
+var insertMessage = exports.insertMessage = function insertMessage(message) {
+  return _axios.default.post("".concat(messageUrl), message).then(function (_ref) {
+    var data = _ref.data;
+    return data;
+  });
+};
 },{"axios":"../node_modules/axios/index.js"}],"pages/property-detail/property-detail.mappers.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mapPropertyFromApiToViewModel = exports.mapPropertyDetailsFromApiToViewModel = void 0;
+exports.mapPropertyDetailsFromApiToViewModel = void 0;
 var mapPropertyDetailsFromApiToViewModel = exports.mapPropertyDetailsFromApiToViewModel = function mapPropertyDetailsFromApiToViewModel(propertyDetails) {
   return mapPropertyFromApiToViewModel(propertyDetails);
 };
-var mapPropertyFromApiToViewModel = exports.mapPropertyFromApiToViewModel = function mapPropertyFromApiToViewModel(property) {
+var mapPropertyFromApiToViewModel = function mapPropertyFromApiToViewModel(property) {
   return {
     id: property.id,
     mainImage: Array.isArray(property.images) ? property.images[0] : '',
@@ -4247,6 +4248,7 @@ var mapPropertyFromApiToViewModel = exports.mapPropertyFromApiToViewModel = func
     notes: property.notes,
     mainFeatures: Array.isArray(property.mainFeatures) ? property.mainFeatures : '',
     equipments: property.equipments,
+    // equipments: transformIdToEquipments(property, equipmentList),
     locationUrl: property.locationUrl,
     equipmentIds: Array.isArray(property.equipmentIds) ? property.equipmentIds : '',
     images: Array.isArray(property.images) ? property.images : ''
@@ -4258,6 +4260,14 @@ var getRoomWord = function getRoomWord(rooms) {
 var getBathRoomWord = function getBathRoomWord(bathrooms) {
   return bathrooms > 1 ? 'baño' : 'baños';
 };
+
+// const transformIdToEquipments(property, equipmentList) => property.equipmentIds.map (equipmentList.find((equipment) => equipment.id));
+
+// const transformIdToEquipments = (property, equipment) =>
+
+//   property
+//     .map(properties => properties.id)
+// console.log(getSortedTitles(bookCollection));
 },{}],"pages/property-detail/property-detail.js":[function(require,module,exports) {
 "use strict";
 
@@ -4266,25 +4276,37 @@ var _helpers = require("../../common/helpers");
 var _propertyDetail = require("./property-detail.helpers");
 var _propertyDetail2 = require("./property-detail.api");
 var _propertyDetail3 = require("./property-detail.mappers");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 console.log('Página de detalles');
-// import { formValidation } from './property-detail.validations';
+// import { formValidation } from './proporty-detail.validations';
 
-var property = {
-  id: '',
-  title: '',
-  notes: '',
-  price: '',
-  city: '',
-  squareMeter: '',
-  rooms: '',
-  bathrooms: '',
-  locationUrl: '',
-  mainFeatures: '',
-  equipmentIds: '',
-  equipments: '',
-  images: '',
-  mainImage: ''
-};
+// let property = {
+//   id: '',
+//   title: '',
+//   notes: '',
+//   price: '',
+//   city: '',
+//   squareMeter: '',
+//   rooms: '',
+//   bathrooms: '',
+//   locationUrl: '',
+//   mainFeatures: '',
+//   equipmentIds: '',
+//   equipments: '',
+//   images: '',
+//   mainImage: '',
+// };
 
 // let contact = {
 //   email: '',
@@ -4292,7 +4314,7 @@ var property = {
 // };
 
 var params = _history.history.getParams();
-console.log(params); //Conseguimos el id que necesitamos
+// console.log(params); //Conseguimos el id que necesitamos
 var isId = Boolean(params.id); //
 
 // if (isId) {
@@ -4316,13 +4338,46 @@ var isId = Boolean(params.id); //
 //   history.back();
 // }
 
+// if (isId) {
+//   getPropertyDetails(params.id).then((detailsList) => {
+//     let idPropierty = params.id - 1;
+//     const viewModelDetailsList = mapPropertyDetailsFromApiToViewModel(
+//       detailsList[idPropierty]
+//     );
+//     const transformIdToEquipments = (equipments) => {
+//       equipments.map((equipments) => equipments.id);
+//     };
+//     console.log(equipments);
+//     console.log(viewModelDetailsList.equipmentIds);
+
+//     setPropertyValues(viewModelDetailsList);
+//   });
+//   //   getEquipmentList().then(equipments);
+// } else {
+//   history.back();
+// }
+
 if (isId) {
-  console.log('funciona');
-  console.log(params.id);
-  (0, _propertyDetail2.getPropertyDetails)(params.id).then(function (detailsList) {
-    property = detailsList[params.id - 1];
-    console.log(property);
-    (0, _propertyDetail.setPropertyValues)(property);
+  Promise.all([(0, _propertyDetail2.getPropertyDetails)(params.id), (0, _propertyDetail2.getEquipmentList)()]).then(function (_ref) {
+    var _ref2 = _slicedToArray(_ref, 2),
+      detailsList = _ref2[0],
+      equipmentsType = _ref2[1];
+    var idPropierty = params.id - 1;
+    var viewModelDetailsList = (0, _propertyDetail3.mapPropertyDetailsFromApiToViewModel)(detailsList[idPropierty]);
+    // console.log(detailsList[idPropierty].equipmentIds)
+    // console.log(equipmentsType)
+
+    var equipmentsTypeList = equipmentsType;
+    console.log(equipmentsTypeList[idPropierty]);
+    var equipmentsList = detailsList[idPropierty].equipmentIds;
+    console.log(equipmentsList);
+
+    // let newEquipmentList = equipmentsTypeList.filter((equipment) => equipment[idPropierty] = detailsList[idPropierty].equipmentIds);
+    // console.log(newEquipmentList)
+    // const equipemntList = (objeto) => objeto.forEach()   
+    // equipemntList(equipmentsTypeList)
+
+    (0, _propertyDetail.setPropertyValues)(viewModelDetailsList);
   });
 } else {
   _history.history.back();
@@ -4338,33 +4393,34 @@ if (isId) {
 //   return myEquipments;
 // };
 
-// VALIDACION DEL CUESTIONARIO DE ENVIO
-// onUpdateField('email', (event) => {
-//   const value = event.target.value;
-//   contact = { ...contact, email: value };
-//   formValidation.validateField('email', contact.email).then((result) => {
-//     onSetError('email', result);
-//   });
-// });
-
-// onUpdateField('message', (event) => {
-//   const value = event.target.value;
-//   contact = { ...contact, message: value };
-//   formValidation.validateField('message', contact.message).then((result) => {
-//     onSetError('message', result);
-//   });
-// });
-
-// onSubmitForm('contact-button', () => {
-//   formValidation.validateForm(contact).then((result) => {
-//     onSetFormErrors(result);
-//     if (result.succeeded) {
-//       insertMessage(contact);
-//       alert('El mensaje ha sido enviado');
-//       history.back();
-//     }
-//   });
-// });
+(0, _helpers.onUpdateField)('email', function (event) {
+  var value = event.target.value;
+  contact = _objectSpread(_objectSpread({}, contact), {}, {
+    email: value
+  });
+  formValidation.validateField('email', contact.email).then(function (result) {
+    (0, _helpers.onSetError)('email', result);
+  });
+});
+(0, _helpers.onUpdateField)('message', function (event) {
+  var value = event.target.value;
+  contact = _objectSpread(_objectSpread({}, contact), {}, {
+    message: value
+  });
+  formValidation.validateField('message', contact.message).then(function (result) {
+    (0, _helpers.onSetError)('message', result);
+  });
+});
+(0, _helpers.onSubmitForm)('contact-button', function () {
+  formValidation.validateForm(contact).then(function (result) {
+    (0, _helpers.onSetFormErrors)(result);
+    if (result.succeeded) {
+      (0, _propertyDetail2.insertMessage)(contact);
+      alert('El mensaje ha sido enviado');
+      _history.history.back();
+    }
+  });
+});
 },{"../../core/router/history":"core/router/history.js","../../common/helpers":"common/helpers/index.js","./property-detail.helpers":"pages/property-detail/property-detail.helpers.js","./property-detail.api":"pages/property-detail/property-detail.api.js","./property-detail.mappers":"pages/property-detail/property-detail.mappers.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -4390,7 +4446,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56344" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61751" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

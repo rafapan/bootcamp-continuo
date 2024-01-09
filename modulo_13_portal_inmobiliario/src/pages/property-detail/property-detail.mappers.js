@@ -2,7 +2,7 @@ export const mapPropertyDetailsFromApiToViewModel = (propertyDetails) => {
   return mapPropertyFromApiToViewModel(propertyDetails);
 };
 
-export const mapPropertyFromApiToViewModel = (property) => {
+const mapPropertyFromApiToViewModel = (property) => {
   return {
     id: property.id,
     mainImage: Array.isArray(property.images) ? property.images[0] : '',
@@ -17,6 +17,7 @@ export const mapPropertyFromApiToViewModel = (property) => {
       ? property.mainFeatures
       : '',
     equipments: property.equipments,
+    // equipments: transformIdToEquipments(property, equipmentList),
     locationUrl: property.locationUrl,
     equipmentIds: Array.isArray(property.equipmentIds)
       ? property.equipmentIds
@@ -32,3 +33,11 @@ const getRoomWord = (rooms) => {
 const getBathRoomWord = (bathrooms) => {
   return bathrooms > 1 ? 'baño' : 'baños';
 };
+
+// const transformIdToEquipments(property, equipmentList) => property.equipmentIds.map (equipmentList.find((equipment) => equipment.id));
+
+// const transformIdToEquipments = (property, equipment) =>
+
+//   property
+//     .map(properties => properties.id)
+// console.log(getSortedTitles(bookCollection));
