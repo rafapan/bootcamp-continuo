@@ -4248,7 +4248,6 @@ var mapPropertyFromApiToViewModel = function mapPropertyFromApiToViewModel(prope
     notes: property.notes,
     mainFeatures: Array.isArray(property.mainFeatures) ? property.mainFeatures : '',
     equipments: property.equipments,
-    // equipments: transformIdToEquipments(property, equipmentList),
     locationUrl: property.locationUrl,
     equipmentIds: Array.isArray(property.equipmentIds) ? property.equipmentIds : '',
     images: Array.isArray(property.images) ? property.images : ''
@@ -4260,14 +4259,6 @@ var getRoomWord = function getRoomWord(rooms) {
 var getBathRoomWord = function getBathRoomWord(bathrooms) {
   return bathrooms > 1 ? 'baño' : 'baños';
 };
-
-// const transformIdToEquipments(property, equipmentList) => property.equipmentIds.map (equipmentList.find((equipment) => equipment.id));
-
-// const transformIdToEquipments = (property, equipment) =>
-
-//   property
-//     .map(properties => properties.id)
-// console.log(getSortedTitles(bookCollection));
 },{}],"pages/property-detail/property-detail.js":[function(require,module,exports) {
 "use strict";
 
@@ -4317,46 +4308,6 @@ var params = _history.history.getParams();
 // console.log(params); //Conseguimos el id que necesitamos
 var isId = Boolean(params.id); //
 
-// if (isId) {
-//   Promise.all([getEquipmentList()]).then(([equipmentList]) => {
-//     getPropertyDetails(params.id).then((apiProperty) => {
-//       apiProperty.map((eachProperty) => {
-//         if (params.id == eachProperty.id) {
-//           const myEquipmentsIds = eachProperty.equipmentIds;
-//           eachProperty.equipments = getMyEquipments(
-//             equipmentList,
-//             myEquipmentsIds
-//           );
-//           let propertyDetail = mapPropertyDetailsFromApiToVM(eachProperty);
-//           setPropertyValues(propertyDetail);
-//         }
-//       });
-//     });
-//     console.log(params.id);
-//   });
-// } else {
-//   history.back();
-// }
-
-// if (isId) {
-//   getPropertyDetails(params.id).then((detailsList) => {
-//     let idPropierty = params.id - 1;
-//     const viewModelDetailsList = mapPropertyDetailsFromApiToViewModel(
-//       detailsList[idPropierty]
-//     );
-//     const transformIdToEquipments = (equipments) => {
-//       equipments.map((equipments) => equipments.id);
-//     };
-//     console.log(equipments);
-//     console.log(viewModelDetailsList.equipmentIds);
-
-//     setPropertyValues(viewModelDetailsList);
-//   });
-//   //   getEquipmentList().then(equipments);
-// } else {
-//   history.back();
-// }
-
 if (isId) {
   Promise.all([(0, _propertyDetail2.getPropertyDetails)(params.id), (0, _propertyDetail2.getEquipmentList)()]).then(function (_ref) {
     var _ref2 = _slicedToArray(_ref, 2),
@@ -4364,35 +4315,21 @@ if (isId) {
       equipmentsType = _ref2[1];
     var idPropierty = params.id - 1;
     var viewModelDetailsList = (0, _propertyDetail3.mapPropertyDetailsFromApiToViewModel)(detailsList[idPropierty]);
-    // console.log(detailsList[idPropierty].equipmentIds)
-    // console.log(equipmentsType)
-
-    var equipmentsTypeList = equipmentsType;
-    console.log(equipmentsTypeList[idPropierty]);
-    var equipmentsList = detailsList[idPropierty].equipmentIds;
-    console.log(equipmentsList);
-
-    // let newEquipmentList = equipmentsTypeList.filter((equipment) => equipment[idPropierty] = detailsList[idPropierty].equipmentIds);
-    // console.log(newEquipmentList)
-    // const equipemntList = (objeto) => objeto.forEach()   
-    // equipemntList(equipmentsTypeList)
-
+    viewModelDetailsList.equipments = getMyEquipments(equipmentsType, detailsList[idPropierty].equipmentIds);
     (0, _propertyDetail.setPropertyValues)(viewModelDetailsList);
   });
 } else {
   _history.history.back();
 }
-
-// const getMyEquipments = (equipmentList, equipmentIds) => {
-//   let myEquipments = Array();
-//   equipmentList.map((equipment) => {
-//     equipmentIds.map((equipId) => {
-//       if (equipment.id == equipId) myEquipments.push(equipment.name);
-//     });
-//   });
-//   return myEquipments;
-// };
-
+var getMyEquipments = function getMyEquipments(equipmentList, equipmentIds) {
+  var myEquipments = Array();
+  equipmentList.map(function (equipment) {
+    equipmentIds.map(function (equipId) {
+      if (equipment.id == equipId) myEquipments.push(equipment.name);
+    });
+  });
+  return myEquipments;
+};
 (0, _helpers.onUpdateField)('email', function (event) {
   var value = event.target.value;
   contact = _objectSpread(_objectSpread({}, contact), {}, {
@@ -4446,7 +4383,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61751" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64616" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

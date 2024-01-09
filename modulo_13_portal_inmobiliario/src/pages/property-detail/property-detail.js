@@ -41,80 +41,33 @@ const params = history.getParams();
 // console.log(params); //Conseguimos el id que necesitamos
 const isId = Boolean(params.id); //
 
-// if (isId) {
-//   Promise.all([getEquipmentList()]).then(([equipmentList]) => {
-//     getPropertyDetails(params.id).then((apiProperty) => {
-//       apiProperty.map((eachProperty) => {
-//         if (params.id == eachProperty.id) {
-//           const myEquipmentsIds = eachProperty.equipmentIds;
-//           eachProperty.equipments = getMyEquipments(
-//             equipmentList,
-//             myEquipmentsIds
-//           );
-//           let propertyDetail = mapPropertyDetailsFromApiToVM(eachProperty);
-//           setPropertyValues(propertyDetail);
-//         }
-//       });
-//     });
-//     console.log(params.id);
-//   });
-// } else {
-//   history.back();
-// }
-
-// if (isId) {
-//   getPropertyDetails(params.id).then((detailsList) => {
-//     let idPropierty = params.id - 1;
-//     const viewModelDetailsList = mapPropertyDetailsFromApiToViewModel(
-//       detailsList[idPropierty]
-//     );
-//     const transformIdToEquipments = (equipments) => {
-//       equipments.map((equipments) => equipments.id);
-//     };
-//     console.log(equipments);
-//     console.log(viewModelDetailsList.equipmentIds);
-
-//     setPropertyValues(viewModelDetailsList);
-//   });
-//   //   getEquipmentList().then(equipments);
-// } else {
-//   history.back();
-// }
-
 if (isId) {
-  Promise.all([getPropertyDetails(params.id), getEquipmentList()]).then(([detailsList, equipmentsType]) => {
-    let idPropierty = params.id - 1;
-    const viewModelDetailsList = mapPropertyDetailsFromApiToViewModel(
-      detailsList[idPropierty]
-    );
-    // console.log(detailsList[idPropierty].equipmentIds)
-    // console.log(equipmentsType)
-
-    let equipmentsTypeList = equipmentsType;
-    console.log(equipmentsTypeList[idPropierty])
-    let equipmentsList = detailsList[idPropierty].equipmentIds;
-    console.log(equipmentsList)
-    
-    // let newEquipmentList = equipmentsTypeList.filter((equipment) => equipment[idPropierty] = detailsList[idPropierty].equipmentIds);
-    // console.log(newEquipmentList)
-    // const equipemntList = (objeto) => objeto.forEach()   
-    // equipemntList(equipmentsTypeList)
-
-    setPropertyValues(viewModelDetailsList);
-  });
+  Promise.all([getPropertyDetails(params.id), getEquipmentList()]).then(
+    ([detailsList, equipmentsType]) => {
+      let idPropierty = params.id - 1;
+      let viewModelDetailsList = mapPropertyDetailsFromApiToViewModel(
+        detailsList[idPropierty]
+      );
+      viewModelDetailsList.equipments = getMyEquipments(
+        equipmentsType,
+        detailsList[idPropierty].equipmentIds
+      );
+      setPropertyValues(viewModelDetailsList);
+    }
+  );
 } else {
   history.back();
 }
 
-// const getMyEquipments = (equipmentList, equipmentIds) => {
-//   let myEquipments = Array();
-//   equipmentList.map((equipment) => {
-//     equipmentIds.map((equipId) => {
-//       if (equipment.id == equipId) myEquipments.push(equipment.name);
-//     });
-//   });
-//   return myEquipments;
-// };
+const getMyEquipments = (equipmentList, equipmentIds) => {
+  let myEquipments = Array();
+  equipmentList.map((equipment) => {
+    equipmentIds.map((equipId) => {
+      if (equipment.id == equipId) myEquipments.push(equipment.name);
+    });
+  });
+  return myEquipments;
+};
 
 onUpdateField('email', (event) => {
   const value = event.target.value;
