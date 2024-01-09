@@ -1858,8 +1858,8 @@ var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var url = "".concat("http://localhost:3000/api", "/properties"); // apunta data.json de server a properties que es donde están los detalles del inmueble
 
-var getPropertyList = exports.getPropertyList = function getPropertyList() {
-  return _axios.default.get(url).then(function (response) {
+var getPropertyList = exports.getPropertyList = function getPropertyList(queryParams) {
+  return _axios.default.get("".concat(url, "?").concat(queryParams)).then(function (response) {
     return response.data;
   });
 };
@@ -1881,10 +1881,10 @@ var getprovincesList = exports.getprovincesList = function getprovincesList() {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.mapPropertyListFromApiToViewModel = void 0;
+exports.mapPropertyListFromApiToViewModel = exports.mapFilterToQueryParams = void 0;
 // un mappers es una funcion. Mapeame una property desde la api al viewmodel
-var mapPropertyListFromApiToViewModel = exports.mapPropertyListFromApiToViewModel = function mapPropertyListFromApiToViewModel(properytList) {
-  return properytList.map(function (property) {
+var mapPropertyListFromApiToViewModel = exports.mapPropertyListFromApiToViewModel = function mapPropertyListFromApiToViewModel(propertyList) {
+  return propertyList.map(function (property) {
     return mapPropertyFromApiToViewModel(property);
   });
 };
@@ -1905,6 +1905,27 @@ var mapPropertyFromApiToViewModel = function mapPropertyFromApiToViewModel(prope
 //creamos un metodo para que según haya mas de una o una habitación nos añada la palabra "habitaciones" o "habitacion"
 var getRoomWord = function getRoomWord(rooms) {
   return rooms > 1 ? 'habitaciones' : 'habitacion';
+};
+
+// creamos un mappers para variar la url para mandarselo al sevridor segun los filtros
+var mapFilterToQueryParams = exports.mapFilterToQueryParams = function mapFilterToQueryParams(filter) {
+  var queryParams = '';
+  if (filter.saleTypeId) {
+    queryParams = "".concat(queryParams, "saleTypeIds_like=").concat(filter.saleTypeId, "&"); // Busca que el saleTypeIds coincida con el saleTypeId que le estoy pasando. Es un array y le pedimos que lo contenga
+  }
+  if (filter.provinceId) {
+    queryParams = "".concat(queryParams, "provinceId=").concat(filter.saleTypeId, "&"); // que sea el mismo. Como no es una array no hay que ponerle _like
+  }
+  if (filter.minRooms) {
+    queryParams = "".concat(queryParams, "rooms_gte=").concat(filter.minRooms, "&");
+  }
+  if (filter.bathRooms) {
+    queryParams = "".concat(queryParams, "bathrooms_gte=").concat(filter.bathRooms, "&");
+  }
+  if (filter.minPrice) {
+    queryParams = "".concat(queryParams, "price_lte=").concat(filter.minPrice, "&");
+  }
+  return queryParams.slice(0, -1); //Para quitar el último caracter y no me ponga al final de la url el último &
 };
 },{}],"core/content/img/email_icon.svg":[function(require,module,exports) {
 module.exports = "/email_icon.1ecdcdf8.svg";
@@ -4217,12 +4238,223 @@ var setOptions = exports.setOptions = function setOptions(list, id, defaultValue
     select.appendChild(option);
   });
 };
-},{"../../core/content/img/email_icon.svg":"core/content/img/email_icon.svg","../../core/content/img/telefono_icon.svg":"core/content/img/telefono_icon.svg","../../core/router":"core/router/index.js"}],"pages/property-list/property-list.js":[function(require,module,exports) {
+},{"../../core/content/img/email_icon.svg":"core/content/img/email_icon.svg","../../core/content/img/telefono_icon.svg":"core/content/img/telefono_icon.svg","../../core/router":"core/router/index.js"}],"pages/property-list/property-list.constants.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.roomOptions = exports.minPriceOptions = exports.maxPriceOptions = exports.bathroomOptions = void 0;
+var roomOptions = exports.roomOptions = [{
+  id: '1',
+  name: '+1'
+}, {
+  id: '2',
+  name: '+2'
+}, {
+  id: '3',
+  name: '+3'
+}, {
+  id: '4',
+  name: '+4'
+}, {
+  id: '5',
+  name: '+5'
+}];
+var bathroomOptions = exports.bathroomOptions = [{
+  id: '1',
+  name: '+1'
+}, {
+  id: '2',
+  name: '+2'
+}, {
+  id: '3',
+  name: '+3'
+}, {
+  id: '4',
+  name: '+4'
+}, {
+  id: '5',
+  name: '+5'
+}];
+var minPriceOptions = exports.minPriceOptions = [{
+  id: '300',
+  name: '300 €'
+}, {
+  id: '600',
+  name: '600 €'
+}, {
+  id: '900',
+  name: '900 €'
+}, {
+  id: '1200',
+  name: '1.200 €'
+}, {
+  id: '1600',
+  name: '1.600 €'
+}, {
+  id: '2000',
+  name: '2.000 €'
+}, {
+  id: '2500',
+  name: '2.500 €'
+}];
+var maxPriceOptions = exports.maxPriceOptions = [{
+  id: '100000',
+  name: '100.000 €'
+}, {
+  id: '120000',
+  name: '120.000 €'
+}, {
+  id: '140000',
+  name: '140.000 €'
+}, {
+  id: '180000',
+  name: '180.000 €'
+}, {
+  id: '200000',
+  name: '200.000 €'
+}, {
+  id: '300000',
+  name: '300.000 €'
+}, {
+  id: '500000',
+  name: '500.000 €'
+}];
+},{}],"common/helpers/element.helpers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.onUpdateField = exports.onSubmitForm = exports.onSetValues = exports.onSetFormErrors = exports.onSetError = exports.onAddFile = void 0;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(r, l) { var t = null == r ? null : "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (null != t) { var e, n, i, u, a = [], f = !0, o = !1; try { if (i = (t = t.call(r)).next, 0 === l) { if (Object(t) !== t) return; f = !1; } else for (; !(f = (e = i.call(t)).done) && (a.push(e.value), a.length !== l); f = !0); } catch (r) { o = !0, n = r; } finally { try { if (!f && null != t.return && (u = t.return(), Object(u) !== u)) return; } finally { if (o) throw n; } } return a; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+var onUpdateField = exports.onUpdateField = function onUpdateField(id, callback) {
+  var element = document.getElementById(id);
+  element.oninput = function (event) {
+    return callback(event);
+  };
+  if (element.type !== 'checkbox') {
+    element.onblur = function (event) {
+      return callback(event);
+    };
+  }
+};
+var onSubmitForm = exports.onSubmitForm = function onSubmitForm(id, callback) {
+  var element = document.getElementById(id);
+  element.onclick = function (e) {
+    e.preventDefault();
+    callback();
+  };
+};
+var onAddFile = exports.onAddFile = function onAddFile(id, callback) {
+  var input = document.getElementById(id);
+  input.onchange = function () {
+    var file = input.files[0];
+    var fileReader = new FileReader();
+    fileReader.onloadend = function () {
+      callback(fileReader.result);
+    };
+    fileReader.readAsDataURL(file);
+  };
+};
+var onSetError = exports.onSetError = function onSetError(id, error) {
+  if (error.succeeded) {
+    removeElementClass(id);
+    setErrorMessage(id, '');
+  } else {
+    setElementClass(id);
+    setErrorMessage(id, error.message);
+  }
+};
+var setElementClass = function setElementClass(id) {
+  var element = document.getElementById(id);
+  if (element) {
+    element.classList.add('error');
+  }
+};
+var removeElementClass = function removeElementClass(id) {
+  var element = document.getElementById(id);
+  if (element) {
+    element.classList.remove('error');
+  }
+};
+var setErrorMessage = function setErrorMessage(id, message) {
+  var messageElement = document.getElementById("".concat(id, "-error"));
+  if (messageElement) {
+    messageElement.textContent = message;
+  }
+};
+var onSetFormErrors = exports.onSetFormErrors = function onSetFormErrors(_ref) {
+  var fieldErrors = _ref.fieldErrors;
+  Object.entries(fieldErrors).forEach(function (_ref2) {
+    var _ref3 = _slicedToArray(_ref2, 2),
+      key = _ref3[0],
+      value = _ref3[1];
+    onSetError(key, value);
+  });
+};
+var setValue = function setValue(element, value) {
+  var elementType = element.tagName.toLowerCase();
+  if (elementType === 'select' || elementType === 'input' || elementType === 'textarea') {
+    element.value = value;
+  } else {
+    element.textContent = value;
+  }
+};
+var onSetValue = function onSetValue(id, value) {
+  var element = document.getElementById(id);
+  console.log({
+    element: element
+  });
+  if (element) {
+    setValue(element, value);
+  }
+};
+var onSetValues = exports.onSetValues = function onSetValues(values) {
+  Object.entries(values).forEach(function (_ref4) {
+    var _ref5 = _slicedToArray(_ref4, 2),
+      key = _ref5[0],
+      value = _ref5[1];
+    return onSetValue(key, value);
+  });
+};
+},{}],"common/helpers/index.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var _element = require("./element.helpers");
+Object.keys(_element).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (key in exports && exports[key] === _element[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _element[key];
+    }
+  });
+});
+},{"./element.helpers":"common/helpers/element.helpers.js"}],"pages/property-list/property-list.js":[function(require,module,exports) {
 "use strict";
 
 var _propertyList = require("./property-list.api");
 var _propertyListMappers = require("./property-list-mappers");
 var _propertyList2 = require("./property-list.helpers");
+var _propertyList3 = require("./property-list.constants");
+var _helpers = require("../../common/helpers");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
@@ -4244,6 +4476,8 @@ Property {
 }
 */
 
+//El método onUpdateField recoge el dato introducido en un campo. El onSubnitForm es para probar que funciona al añadir un valor al campo de los filtros.
+
 // hacemos todas las peticiones a la vez y una vez que esten todas hechas se actua.
 Promise.all([(0, _propertyList.getPropertyList)(), (0, _propertyList.getSaleTypeList)(), (0, _propertyList.getprovincesList)()]).then(function (resultList) {
   // const propertyList = resultList[0];
@@ -4256,6 +4490,10 @@ Promise.all([(0, _propertyList.getPropertyList)(), (0, _propertyList.getSaleType
   loadPropertyList(propertyList);
   (0, _propertyList2.setOptions)(saleTypeList, 'select-sale-type', '¿Qué venta?');
   (0, _propertyList2.setOptions)(provinceList, 'select-province', '¿Dónde?');
+  (0, _propertyList2.setOptions)(_propertyList3.roomOptions, 'select-room', '¿Habitaciones?');
+  (0, _propertyList2.setOptions)(_propertyList3.bathroomOptions, 'select-bathroom', '¿Cuartos de baño');
+  (0, _propertyList2.setOptions)(_propertyList3.minPriceOptions, 'select-min-price', 'Min (EUR)');
+  (0, _propertyList2.setOptions)(_propertyList3.maxPriceOptions, 'select-max-price', 'Max (EUR)');
 });
 
 // getPropertyList().then((propertyList) => {
@@ -4268,7 +4506,64 @@ var loadPropertyList = function loadPropertyList(propertyList) {
   var viewModelPropertyList = (0, _propertyListMappers.mapPropertyListFromApiToViewModel)(propertyList);
   (0, _propertyList2.addPropertyRows)(viewModelPropertyList);
 };
-},{"./property-list.api":"pages/property-list/property-list.api.js","./property-list-mappers":"pages/property-list/property-list-mappers.js","./property-list.helpers":"pages/property-list/property-list.helpers.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+// vamos a recoger los campos del formulario de filtros
+var filter = {
+  saleTypeId: '',
+  provinceId: '',
+  minRooms: '',
+  minBathRooms: '',
+  minPrice: '',
+  maxPrice: ''
+};
+(0, _helpers.onUpdateField)('select-sale-type', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    saleTypeId: value
+  });
+});
+(0, _helpers.onUpdateField)('select-province', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    provinceId: value
+  });
+});
+(0, _helpers.onUpdateField)('select-room', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    minRooms: value
+  });
+});
+(0, _helpers.onUpdateField)('select-bathroom', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    minBathrooms: value
+  });
+});
+(0, _helpers.onUpdateField)('select-min-price', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    minPrice: value
+  });
+});
+(0, _helpers.onUpdateField)('select-max-price', function (event) {
+  var value = event.target.value;
+  filter = _objectSpread(_objectSpread({}, filter), {}, {
+    maxPrice: value
+  });
+});
+(0, _helpers.onSubmitForm)('search-button', function () {
+  var queryParams = (0, _propertyListMappers.mapFilterToQueryParams)(filter);
+  (0, _propertyList2.clearPropertyRows)(); //para limpiar el html y borra las cards que no corresponden con el filtro
+  (0, _propertyList.getPropertyList)(queryParams).then(function (propertyList) {
+    loadPropertyList(propertyList);
+  });
+  //Para filtrar tenemos que convertir la url a la de json.server. `hhtp://localhost:3000/api/properties?rooms_gte=${filter.minRooms}` esta es la informacion que deberiamos mandar al sevridor para filter.
+  console.log({
+    filter: filter
+  });
+});
+},{"./property-list.api":"pages/property-list/property-list.api.js","./property-list-mappers":"pages/property-list/property-list-mappers.js","./property-list.helpers":"pages/property-list/property-list.helpers.js","./property-list.constants":"pages/property-list/property-list.constants.js","../../common/helpers":"common/helpers/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4293,7 +4588,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "62804" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "49308" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
