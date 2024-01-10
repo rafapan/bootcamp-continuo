@@ -26,14 +26,6 @@ const validationSchema = {
         validator: Validators.required,
         message: 'Campo requerido',
       },
-      {
-        validator: Validators.pattern,
-        customArgs: {
-          pattern:
-            /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/,
-        },
-        message: 'Introduzca un nombre válido',
-      },
     ],
     amount: [
       {
@@ -50,14 +42,7 @@ const validationSchema = {
       {
         validator: Validators.required,
         message: 'Campo requerido',
-      },
-      {
-        validator: Validators.pattern,
-        customArgs: {
-          pattern: /[A-Za-zÁÉÍÓÚñáéíóúÑ]{2}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']/,
-        },
-        message: 'Introduzca un concepto correcto',
-      },
+      }
     ],
     day: [
       {
