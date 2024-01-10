@@ -2936,12 +2936,6 @@ var validationSchema = {
     name: [{
       validator: _fonk.Validators.required,
       message: 'Campo requerido'
-    }, {
-      validator: _fonk.Validators.pattern,
-      customArgs: {
-        pattern: /^([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']+[\s])+([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])+[\s]?([A-Za-zÁÉÍÓÚñáéíóúÑ]{0}?[A-Za-zÁÉÍÓÚñáéíóúÑ\'])?$/
-      },
-      message: 'Introduzca un nombre válido'
     }],
     amount: [{
       validator: _fonk.Validators.required,
@@ -2956,12 +2950,6 @@ var validationSchema = {
     concept: [{
       validator: _fonk.Validators.required,
       message: 'Campo requerido'
-    }, {
-      validator: _fonk.Validators.pattern,
-      customArgs: {
-        pattern: /[A-Za-zÁÉÍÓÚñáéíóúÑ]{2}?[A-Za-zÁÉÍÓÚñáéíóúÑ\']/
-      },
-      message: 'Introduzca un concepto correcto'
     }],
     day: [{
       validator: _trasnferCustom.myValidatorDay
@@ -7104,7 +7092,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52445" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65384" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
