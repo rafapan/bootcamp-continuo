@@ -15,7 +15,17 @@ import {
   onSetError,
   onSetFormErrors,
 } from '../../common/helpers';
+import {
+  setOptionList,
+  setCheckboxList,
+  formatCheckboxId,
+} from './upload-property.helpers';
 import { formValidation } from './upload-property.validations';
+import {
+  getprovincesList,
+  getSaleTypeList,
+  getEquipmentList,
+} from './upload-property.api';
 
 let formUpload = {
   title: '',
@@ -29,6 +39,9 @@ let formUpload = {
   rooms: '',
   bathrooms: '',
   locationUrl: '',
+  province: '',
+  saleTypes: [],
+  saleTypesId: [],
 };
 
 onUpdateField('title', (event) => {
@@ -70,6 +83,16 @@ onUpdateField('price', (event) => {
     onSetError('price', result);
   });
 });
+
+// onUpdateField('saleTypes', (event) => {
+//   const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+//   formUpload = { ...formUpload, saleTypes: value };
+//   formValidation
+//     .validateField('saleTypes', formUpload.saleTypes)
+//     .then((result) => {
+//       onSetError('saleTypes', result);
+//     });
+// });
 
 onUpdateField('address', (event) => {
   const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
@@ -130,3 +153,26 @@ onSubmitForm('save-button', () => {
     console.log(formUpload);
   });
 });
+
+onUpdateField('saleTypes', (event) => {
+  const value = event.target.value;
+  const isChecked = event.target.checked;
+
+  formUpload = {
+    ...formUpload,
+    saleTypesId: isChecked
+      ? [...formUpload.saleTypesId, value].sort()
+      : formUpload.saleTypesId
+          .filter((saleTypesId) => saleTypesId !== value)
+          .sort(),
+  };
+});
+
+Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
+  ([checksSalesTypes, provinces, checksEquipments]) => {
+    setCheckboxList(checksSalesTypes, 'saleTypes');
+    // setEvents(checksSalesTypes);
+    setOptionList(provinces, 'province');
+    setCheckboxList(checksEquipments, 'equipments');
+  }
+);
