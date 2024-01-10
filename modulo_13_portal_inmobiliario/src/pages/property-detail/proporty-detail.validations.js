@@ -16,11 +16,7 @@ const validationSchema = {
       {
         validator: Validators.required,
         message: 'Campo requerido',
-      },
-      {
-        validator: Validators.pattern,
-        message: 'Introduzca un mensaje para el propietario',
-      },
+      }
     ],
   },
 };
