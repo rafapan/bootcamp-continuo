@@ -5,6 +5,7 @@ import {
   onSubmitForm,
   onSetError,
   onSetFormErrors,
+  onSetValues,
 } from '../../common/helpers';
 import { setPropertyValues } from './property-detail.helpers';
 import {
@@ -94,9 +95,19 @@ onSubmitForm('contact-button', () => {
   formValidation.validateForm(formContact).then((result) => {
     onSetFormErrors(result);
     if (result.succeeded) {
+      resetContactForm(formContact);
       insertMessage(formContact);
-      alert('Hemos recibido su mensaje');
+      // alert('Hemos recibido su mensaje');
     }
     console.log(formContact);
   });
 });
+
+const resetContactForm = (formContact) => {
+  formContact = {
+    ...formContact,
+    email: '',
+    message: '',
+  };
+  return onSetValues(formContact);
+};
