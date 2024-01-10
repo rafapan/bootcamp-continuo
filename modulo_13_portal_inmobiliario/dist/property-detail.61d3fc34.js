@@ -6978,12 +6978,20 @@ var formContact = {
   _proportyDetail.formValidation.validateForm(formContact).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
     if (result.succeeded) {
+      resetContactForm(formContact);
       (0, _propertyDetail2.insertMessage)(formContact);
-      alert('Hemos recibido su mensaje');
+      // alert('Hemos recibido su mensaje');
     }
     console.log(formContact);
   });
 });
+var resetContactForm = function resetContactForm(formContact) {
+  formContact = _objectSpread(_objectSpread({}, formContact), {}, {
+    email: '',
+    message: ''
+  });
+  return (0, _helpers.onSetValues)(formContact);
+};
 },{"../../core/router/history":"core/router/history.js","../../common/helpers":"common/helpers/index.js","./property-detail.helpers":"pages/property-detail/property-detail.helpers.js","./property-detail.api":"pages/property-detail/property-detail.api.js","./property-detail.mappers":"pages/property-detail/property-detail.mappers.js","./proporty-detail.validations":"pages/property-detail/proporty-detail.validations.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -7009,7 +7017,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65146" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50426" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
