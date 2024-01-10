@@ -194,11 +194,6 @@ onSubmitForm('insert-feature-button', () => {
   }
 });
 
-// onSubmitForm('delete-de-button', () => {
-//     onRemoveFeature(myFeature);
-//         let index = newProperty.mainFeatures.indexOf(myFeature);
-//         newProperty.mainFeatures.splice(index, 1);
-// })
 
 Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
   ([checksSalesTypes, provinces, checksEquipments]) => {

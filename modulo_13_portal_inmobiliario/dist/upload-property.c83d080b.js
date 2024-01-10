@@ -7183,13 +7183,6 @@ var removeElement = function removeElement(value, obj, id) {
     }
   }
 });
-
-// onSubmitForm('delete-de-button', () => {
-//     onRemoveFeature(myFeature);
-//         let index = newProperty.mainFeatures.indexOf(myFeature);
-//         newProperty.mainFeatures.splice(index, 1);
-// })
-
 Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getprovincesList)(), (0, _uploadProperty3.getEquipmentList)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3),
     checksSalesTypes = _ref2[0],
