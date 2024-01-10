@@ -1,4 +1,5 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
+import { iban } from '@lemoncode/fonk-iban-validator';
 import {
   myValidatorDay,
   myValidatorMonth,
@@ -13,11 +14,7 @@ const validationSchema = {
         message: 'Campo requerido',
       },
       {
-        validator: Validators.pattern,
-        customArgs: {
-          pattern:
-            /[A-Z]\d{2}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}[ ]\d{4}|ES\d{22}/,
-        },
+        validator: iban.validator,
         message: 'El IBAN no es correcto',
       },
     ],
