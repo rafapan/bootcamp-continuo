@@ -50,7 +50,7 @@ let newProperty = {
   province: '',
   saleTypes: [],
   saleTypesId: [],
-  images: '',
+  images: [],
   equipments: [],
   equipmentId: [],
   mainFeatures: [],
@@ -95,28 +95,6 @@ onUpdateField('price', (event) => {
     onSetError('price', result);
   });
 });
-
-const setEvents = (list, ID) => {
-  list.forEach((el) => {
-    const id = formatCheckboxId(el);
-    onUpdateField(id, (event) => {
-      const value = event.target.value;
-      if (event.target.checked === true) {
-        newProperty = addElement(value, newProperty, ID);
-      } else {
-        newProperty = removeElement(value, newProperty, ID);
-      }
-    });
-  });
-};
-
-const addElement = (value, obj, id) => {
-  return { ...obj, [id]: [...obj[id], value] };
-};
-
-const removeElement = (value, obj, id) => {
-  return { ...obj, [id]: [...obj[id].filter((element) => element !== value)] };
-};
 
 onUpdateField('address', (event) => {
   const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
@@ -178,6 +156,28 @@ onUpdateField('locationUrl', (event) => {
     });
 });
 
+const setEvents = (list, ID) => {
+    list.forEach((el) => {
+      const id = formatCheckboxId(el);
+      onUpdateField(id, (event) => {
+        const value = event.target.value;
+        if (event.target.checked === true) {
+          newProperty = addElement(value, newProperty, ID);
+        } else {
+          newProperty = removeElement(value, newProperty, ID);
+        }
+      });
+    });
+  };
+  
+  const addElement = (value, obj, id) => {
+    return { ...obj, [id]: [...obj[id], value] };
+  };
+  
+  const removeElement = (value, obj, id) => {
+    return { ...obj, [id]: [...obj[id].filter((element) => element !== value)] };
+  };
+
 onSubmitForm('insert-feature-button', () => {
   const value = document.getElementById('newFeature').value;
   if (value) {
@@ -194,6 +194,13 @@ onSubmitForm('insert-feature-button', () => {
   }
 });
 
+onAddFile('add-image', event => {
+    onAddImage(event);
+    console.log(event)
+    const value = event
+    newProperty = addElement(value, newProperty, 'images');
+})
+
 
 Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
   ([checksSalesTypes, provinces, checksEquipments]) => {
@@ -209,11 +216,11 @@ Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
 onSubmitForm('save-button', () => {
   formValidation.validateForm(newProperty).then((result) => {
     onSetFormErrors(result);
-    //   if (result.succeeded) {
-    //     insertMessage(formContact);
-    //     alert('Hemos recibido su mensaje');
-    //   }
-    posttNewProperty(newProperty);
+      if (result.succeeded) {
+        posttNewProperty(newProperty);
+        alert('Nueva propiedad añadida');
+      }
+    
     console.log(newProperty);
   });
 });

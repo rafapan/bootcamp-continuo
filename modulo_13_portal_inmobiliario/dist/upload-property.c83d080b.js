@@ -7034,7 +7034,7 @@ var newProperty = {
   province: '',
   saleTypes: [],
   saleTypesId: [],
-  images: '',
+  images: [],
   equipments: [],
   equipmentId: [],
   mainFeatures: []
@@ -7084,27 +7084,6 @@ var newProperty = {
     (0, _helpers.onSetError)('price', result);
   });
 });
-var setEvents = function setEvents(list, ID) {
-  list.forEach(function (el) {
-    var id = (0, _uploadProperty.formatCheckboxId)(el);
-    (0, _helpers.onUpdateField)(id, function (event) {
-      var value = event.target.value;
-      if (event.target.checked === true) {
-        newProperty = addElement(value, newProperty, ID);
-      } else {
-        newProperty = removeElement(value, newProperty, ID);
-      }
-    });
-  });
-};
-var addElement = function addElement(value, obj, id) {
-  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, [].concat(_toConsumableArray(obj[id]), [value])));
-};
-var removeElement = function removeElement(value, obj, id) {
-  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, _toConsumableArray(obj[id].filter(function (element) {
-    return element !== value;
-  }))));
-};
 (0, _helpers.onUpdateField)('address', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
@@ -7168,6 +7147,27 @@ var removeElement = function removeElement(value, obj, id) {
     (0, _helpers.onSetError)('locationUrl', result);
   });
 });
+var setEvents = function setEvents(list, ID) {
+  list.forEach(function (el) {
+    var id = (0, _uploadProperty.formatCheckboxId)(el);
+    (0, _helpers.onUpdateField)(id, function (event) {
+      var value = event.target.value;
+      if (event.target.checked === true) {
+        newProperty = addElement(value, newProperty, ID);
+      } else {
+        newProperty = removeElement(value, newProperty, ID);
+      }
+    });
+  });
+};
+var addElement = function addElement(value, obj, id) {
+  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, [].concat(_toConsumableArray(obj[id]), [value])));
+};
+var removeElement = function removeElement(value, obj, id) {
+  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, _toConsumableArray(obj[id].filter(function (element) {
+    return element !== value;
+  }))));
+};
 (0, _helpers.onSubmitForm)('insert-feature-button', function () {
   var value = document.getElementById('newFeature').value;
   if (value) {
@@ -7183,6 +7183,12 @@ var removeElement = function removeElement(value, obj, id) {
     }
   }
 });
+(0, _helpers.onAddFile)('add-image', function (event) {
+  (0, _uploadProperty.onAddImage)(event);
+  console.log(event);
+  var value = event;
+  newProperty = addElement(value, newProperty, 'images');
+});
 Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getprovincesList)(), (0, _uploadProperty3.getEquipmentList)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3),
     checksSalesTypes = _ref2[0],
@@ -7197,11 +7203,10 @@ Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getpr
 (0, _helpers.onSubmitForm)('save-button', function () {
   _uploadProperty2.formValidation.validateForm(newProperty).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
-    //   if (result.succeeded) {
-    //     insertMessage(formContact);
-    //     alert('Hemos recibido su mensaje');
-    //   }
-    (0, _uploadProperty3.posttNewProperty)(newProperty);
+    if (result.succeeded) {
+      (0, _uploadProperty3.posttNewProperty)(newProperty);
+      alert('Nueva propiedad añadida');
+    }
     console.log(newProperty);
   });
 });
@@ -7230,7 +7235,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54688" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50231" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
