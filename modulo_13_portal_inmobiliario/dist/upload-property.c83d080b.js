@@ -5098,6 +5098,49 @@ var validator$1 = exports.isUrl = /*#__PURE__*/Object.freeze({
   setErrorMessage: setErrorMessage,
   validator: validator
 });
+},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js"}],"../node_modules/@lemoncode/fonk-array-required-validator/dist/@lemoncode/fonk-array-required-validator.esm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.arrayRequired = void 0;
+var _fonk = require("@lemoncode/fonk");
+var VALIDATOR_TYPE = 'ARRAY_REQUIRED';
+var defaultMessage = 'The list should have items';
+var setErrorMessage = function setErrorMessage(message) {
+  return defaultMessage = message;
+};
+var defaultCustomArgs = {
+  minLength: 1
+};
+var validateType = function validateType(value) {
+  return Array.isArray(value);
+};
+var validate = function validate(value, args) {
+  return value.length >= args.minLength && (args.maxLength ? value.length <= args.maxLength : true);
+};
+var isDefined = function isDefined(value) {
+  return value !== void 0 && value !== null && value !== '';
+};
+var validator = function validator(fieldValidatorArgs) {
+  var value = fieldValidatorArgs.value,
+    _fieldValidatorArgs$m = fieldValidatorArgs.message,
+    message = _fieldValidatorArgs$m === void 0 ? defaultMessage : _fieldValidatorArgs$m,
+    customArgs = fieldValidatorArgs.customArgs;
+  var args = Object.assign(Object.assign({}, defaultCustomArgs), customArgs);
+  var succeeded = !isDefined(value) || validateType(value) && validate(value, args);
+  return {
+    succeeded: succeeded,
+    message: succeeded ? '' : (0, _fonk.parseMessageWithCustomArgs)(message || defaultMessage, customArgs),
+    type: VALIDATOR_TYPE
+  };
+};
+var validator$1 = exports.arrayRequired = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  setErrorMessage: setErrorMessage,
+  validator: validator
+});
 },{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js"}],"pages/upload-property/upload-property.validations.js":[function(require,module,exports) {
 "use strict";
 
@@ -5107,6 +5150,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.formValidation = void 0;
 var _fonk = require("@lemoncode/fonk");
 var _fonkIsUrlValidator = require("@lemoncode/fonk-is-url-validator");
+var _fonkArrayRequiredValidator = require("@lemoncode/fonk-array-required-validator");
 var validationSchema = {
   field: {
     title: [{
@@ -5164,11 +5208,18 @@ var validationSchema = {
     }, {
       validator: _fonkIsUrlValidator.isUrl.validator,
       message: 'Introduzca una URL válida'
+    }],
+    saleTypes: [{
+      validator: _fonkArrayRequiredValidator.arrayRequired.validator,
+      customArgs: {
+        minLength: 1,
+        maxLength: 10
+      }
     }]
   }
 };
 var formValidation = exports.formValidation = (0, _fonk.createFormValidation)(validationSchema);
-},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","@lemoncode/fonk-is-url-validator":"../node_modules/@lemoncode/fonk-is-url-validator/dist/@lemoncode/fonk-is-url-validator.esm.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
+},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","@lemoncode/fonk-is-url-validator":"../node_modules/@lemoncode/fonk-is-url-validator/dist/@lemoncode/fonk-is-url-validator.esm.js","@lemoncode/fonk-array-required-validator":"../node_modules/@lemoncode/fonk-array-required-validator/dist/@lemoncode/fonk-array-required-validator.esm.js"}],"../node_modules/axios/lib/helpers/bind.js":[function(require,module,exports) {
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -6959,7 +7010,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  * Crear método post para enviar información del formulario.
  */
 console.log('subir una propiedad');
-var formUpload = {
+var newProperty = {
   title: '',
   notes: '',
   email: '',
@@ -6967,141 +7018,168 @@ var formUpload = {
   price: '',
   address: '',
   city: '',
+  provinceId: '',
   squareMeter: '',
   rooms: '',
   bathrooms: '',
   locationUrl: '',
   province: '',
   saleTypes: [],
-  saleTypesId: []
+  saleTypesId: [],
+  images: '',
+  equipments: [],
+  equipmentId: []
 };
 (0, _helpers.onUpdateField)('title', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     title: value
   });
-  _uploadProperty2.formValidation.validateField('title', formUpload.title).then(function (result) {
+  _uploadProperty2.formValidation.validateField('title', newProperty.title).then(function (result) {
     (0, _helpers.onSetError)('title', result);
   });
 });
 (0, _helpers.onUpdateField)('notes', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     notes: value
   });
-  _uploadProperty2.formValidation.validateField('notes', formUpload.notes).then(function (result) {
+  _uploadProperty2.formValidation.validateField('notes', newProperty.notes).then(function (result) {
     (0, _helpers.onSetError)('notes', result);
   });
 });
 (0, _helpers.onUpdateField)('email', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     email: value
   });
-  _uploadProperty2.formValidation.validateField('email', formUpload.email).then(function (result) {
+  _uploadProperty2.formValidation.validateField('email', newProperty.email).then(function (result) {
     (0, _helpers.onSetError)('email', result);
   });
 });
 (0, _helpers.onUpdateField)('phone', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     phone: value
   });
-  _uploadProperty2.formValidation.validateField('phone', formUpload.phone).then(function (result) {
+  _uploadProperty2.formValidation.validateField('phone', newProperty.phone).then(function (result) {
     (0, _helpers.onSetError)('phone', result);
   });
 });
 (0, _helpers.onUpdateField)('price', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     price: value
   });
-  _uploadProperty2.formValidation.validateField('price', formUpload.price).then(function (result) {
+  _uploadProperty2.formValidation.validateField('price', newProperty.price).then(function (result) {
     (0, _helpers.onSetError)('price', result);
   });
 });
-
-// onUpdateField('saleTypes', (event) => {
-//   const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-//   formUpload = { ...formUpload, saleTypes: value };
-//   formValidation
-//     .validateField('saleTypes', formUpload.saleTypes)
-//     .then((result) => {
-//       onSetError('saleTypes', result);
-//     });
-// });
-
+var setEvents = function setEvents(list, ID) {
+  list.forEach(function (el) {
+    var id = (0, _uploadProperty.formatCheckboxId)(el);
+    (0, _helpers.onUpdateField)(id, function (event) {
+      var value = event.target.value;
+      if (event.target.checked === true) {
+        newProperty = addElement(value, newProperty, ID);
+      } else {
+        newProperty = removeElement(value, newProperty, ID);
+      }
+    });
+  });
+};
+var addElement = function addElement(value, obj, id) {
+  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, [].concat(_toConsumableArray(obj[id]), [value])));
+};
+var removeElement = function removeElement(value, obj, id) {
+  return _objectSpread(_objectSpread({}, obj), {}, _defineProperty({}, id, _toConsumableArray(obj[id].filter(function (element) {
+    return element !== value;
+  }))));
+};
 (0, _helpers.onUpdateField)('address', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     address: value
   });
-  _uploadProperty2.formValidation.validateField('address', formUpload.address).then(function (result) {
+  _uploadProperty2.formValidation.validateField('address', newProperty.address).then(function (result) {
     (0, _helpers.onSetError)('address', result);
   });
 });
 (0, _helpers.onUpdateField)('city', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     city: value
   });
-  _uploadProperty2.formValidation.validateField('city', formUpload.city).then(function (result) {
+  _uploadProperty2.formValidation.validateField('city', newProperty.city).then(function (result) {
     (0, _helpers.onSetError)('city', result);
+  });
+});
+(0, _helpers.onUpdateField)('province', function (event) {
+  var value = event.target.value;
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    provinceId: value
+  });
+  _uploadProperty2.formValidation.validateField('province', newProperty.provinceId).then(function (result) {
+    (0, _helpers.onSetError)('province', result);
   });
 });
 (0, _helpers.onUpdateField)('squareMeter', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     squareMeter: value
   });
-  _uploadProperty2.formValidation.validateField('squareMeter', formUpload.squareMeter).then(function (result) {
+  _uploadProperty2.formValidation.validateField('squareMeter', newProperty.squareMeter).then(function (result) {
     (0, _helpers.onSetError)('squareMeter', result);
   });
 });
 (0, _helpers.onUpdateField)('rooms', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     rooms: value
   });
-  _uploadProperty2.formValidation.validateField('rooms', formUpload.rooms).then(function (result) {
+  _uploadProperty2.formValidation.validateField('rooms', newProperty.rooms).then(function (result) {
     (0, _helpers.onSetError)('rooms', result);
   });
 });
 (0, _helpers.onUpdateField)('bathrooms', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     bathrooms: value
   });
-  _uploadProperty2.formValidation.validateField('bathrooms', formUpload.bathrooms).then(function (result) {
+  _uploadProperty2.formValidation.validateField('bathrooms', newProperty.bathrooms).then(function (result) {
     (0, _helpers.onSetError)('bathrooms', result);
   });
 });
 (0, _helpers.onUpdateField)('locationUrl', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     locationUrl: value
   });
-  _uploadProperty2.formValidation.validateField('locationUrl', formUpload.locationUrl).then(function (result) {
+  _uploadProperty2.formValidation.validateField('locationUrl', newProperty.locationUrl).then(function (result) {
     (0, _helpers.onSetError)('locationUrl', result);
   });
 });
+
+// onUpdateField('images', (event) => {
+//   const value = event.target.value;
+//   newProperty = { ...newProperty, newImage: value };
+//   onAddFile('add-image', (value) => {
+//     onAddImage(value);
+//     newProperty.images.push(value);
+//   });
+//   formValidation.validateField('images', newProperty.images).then((result) => {
+//     onSetError('images', result);
+//   });
+// });
+
 (0, _helpers.onSubmitForm)('save-button', function () {
-  _uploadProperty2.formValidation.validateForm(formUpload).then(function (result) {
+  _uploadProperty2.formValidation.validateForm(newProperty).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
     //   if (result.succeeded) {
     //     insertMessage(formContact);
     //     alert('Hemos recibido su mensaje');
     //   }
-    console.log(formUpload);
-  });
-});
-(0, _helpers.onUpdateField)('saleTypes', function (event) {
-  var value = event.target.value;
-  var isChecked = event.target.checked;
-  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
-    saleTypesId: isChecked ? [].concat(_toConsumableArray(formUpload.saleTypesId), [value]).sort() : formUpload.saleTypesId.filter(function (saleTypesId) {
-      return saleTypesId !== value;
-    }).sort()
+    console.log(newProperty);
   });
 });
 Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getprovincesList)(), (0, _uploadProperty3.getEquipmentList)()]).then(function (_ref) {
@@ -7110,9 +7188,10 @@ Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getpr
     provinces = _ref2[1],
     checksEquipments = _ref2[2];
   (0, _uploadProperty.setCheckboxList)(checksSalesTypes, 'saleTypes');
-  // setEvents(checksSalesTypes);
   (0, _uploadProperty.setOptionList)(provinces, 'province');
   (0, _uploadProperty.setCheckboxList)(checksEquipments, 'equipments');
+  setEvents(checksSalesTypes, 'saleTypes');
+  setEvents(checksEquipments, 'equipments');
 });
 },{"../../core/router/history":"core/router/history.js","../../common/helpers":"common/helpers/index.js","./upload-property.helpers":"pages/upload-property/upload-property.helpers.js","./upload-property.validations":"pages/upload-property/upload-property.validations.js","./upload-property.api":"pages/upload-property/upload-property.api.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -7139,7 +7218,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52618" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54688" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

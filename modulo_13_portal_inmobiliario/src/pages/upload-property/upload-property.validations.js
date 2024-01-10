@@ -1,5 +1,6 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
 import { isUrl } from '@lemoncode/fonk-is-url-validator';
+import { arrayRequired } from '@lemoncode/fonk-array-required-validator';
 
 const validationSchema = {
   field: {
@@ -80,6 +81,12 @@ const validationSchema = {
       {
         validator: isUrl.validator,
         message: 'Introduzca una URL válida',
+      },
+    ],
+    saleTypes: [
+      {
+        validator: arrayRequired.validator,
+        customArgs: { minLength: 1, maxLength: 10 },
       },
     ],
   },
