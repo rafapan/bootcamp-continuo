@@ -2260,7 +2260,38 @@ var history = exports.history = {
     });
   }
 };
-},{"qs":"../node_modules/qs/lib/index.js"}],"common/helpers/element.helpers.js":[function(require,module,exports) {
+},{"qs":"../node_modules/qs/lib/index.js"}],"pages/upload-property/upload-property.mappers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mapnewPropertyFromVMTOAPI = void 0;
+var mapnewPropertyFromVMTOAPI = exports.mapnewPropertyFromVMTOAPI = function mapnewPropertyFromVMTOAPI(uploadProperty) {
+  return mapNewPropertyFromViewModelToAPI(uploadProperty);
+};
+var mapNewPropertyFromViewModelToAPI = function mapNewPropertyFromViewModelToAPI(property) {
+  return {
+    id: property.id,
+    title: property.title,
+    notes: property.notes,
+    email: property.email,
+    phone: property.phone,
+    price: parseInt(property.price),
+    saleTypeIds: Array.isArray(property.saleTypeIds) ? property.saleTypeIds : '',
+    address: property.address,
+    city: property.city,
+    provinceId: property.provinceId,
+    squareMeter: parseInt(property.squareMeter),
+    rooms: parseInt(property.rooms),
+    bathrooms: parseInt(property.bathrooms),
+    locationUrl: property.locationUrl,
+    mainFeatures: Array.isArray(property.mainFeatures) ? property.mainFeatures : '',
+    equipmentIds: Array.isArray(property.equipmentIds) ? property.equipmentIds : '',
+    images: Array.isArray(property.images) ? property.images : ''
+  };
+};
+},{}],"common/helpers/element.helpers.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6976,9 +7007,9 @@ var getprovincesList = exports.getprovincesList = function getprovincesList() {
     return response.data;
   });
 };
-var posttNewPropertyUrl = "".concat("http://localhost:3000/api", "/properties");
+var postNewPropertyUrl = "".concat("http://localhost:3000/api", "/properties");
 var posttNewProperty = exports.posttNewProperty = function posttNewProperty(property) {
-  return _axios.default.post("".concat(posttNewPropertyUrl), property).then(function (_ref) {
+  return _axios.default.post("".concat(postNewPropertyUrl), property).then(function (_ref) {
     var data = _ref.data;
     return data;
   });
@@ -6987,10 +7018,11 @@ var posttNewProperty = exports.posttNewProperty = function posttNewProperty(prop
 "use strict";
 
 var _history = require("../../core/router/history");
+var _uploadProperty = require("./upload-property.mappers");
 var _helpers = require("../../common/helpers");
-var _uploadProperty = require("./upload-property.helpers");
-var _uploadProperty2 = require("./upload-property.validations");
-var _uploadProperty3 = require("./upload-property.api");
+var _uploadProperty2 = require("./upload-property.helpers");
+var _uploadProperty3 = require("./upload-property.validations");
+var _uploadProperty4 = require("./upload-property.api");
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -7034,7 +7066,7 @@ var newProperty = {
   province: '',
   saleTypes: [],
   saleTypesId: [],
-  images: '',
+  images: [],
   equipments: [],
   equipmentId: [],
   mainFeatures: []
@@ -7044,7 +7076,7 @@ var newProperty = {
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     title: value
   });
-  _uploadProperty2.formValidation.validateField('title', newProperty.title).then(function (result) {
+  _uploadProperty3.formValidation.validateField('title', newProperty.title).then(function (result) {
     (0, _helpers.onSetError)('title', result);
   });
 });
@@ -7053,7 +7085,7 @@ var newProperty = {
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     notes: value
   });
-  _uploadProperty2.formValidation.validateField('notes', newProperty.notes).then(function (result) {
+  _uploadProperty3.formValidation.validateField('notes', newProperty.notes).then(function (result) {
     (0, _helpers.onSetError)('notes', result);
   });
 });
@@ -7062,7 +7094,7 @@ var newProperty = {
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     email: value
   });
-  _uploadProperty2.formValidation.validateField('email', newProperty.email).then(function (result) {
+  _uploadProperty3.formValidation.validateField('email', newProperty.email).then(function (result) {
     (0, _helpers.onSetError)('email', result);
   });
 });
@@ -7071,7 +7103,7 @@ var newProperty = {
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     phone: value
   });
-  _uploadProperty2.formValidation.validateField('phone', newProperty.phone).then(function (result) {
+  _uploadProperty3.formValidation.validateField('phone', newProperty.phone).then(function (result) {
     (0, _helpers.onSetError)('phone', result);
   });
 });
@@ -7080,13 +7112,76 @@ var newProperty = {
   newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
     price: value
   });
-  _uploadProperty2.formValidation.validateField('price', newProperty.price).then(function (result) {
+  _uploadProperty3.formValidation.validateField('price', newProperty.price).then(function (result) {
     (0, _helpers.onSetError)('price', result);
+  });
+});
+(0, _helpers.onUpdateField)('address', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    address: value
+  });
+  _uploadProperty3.formValidation.validateField('address', newProperty.address).then(function (result) {
+    (0, _helpers.onSetError)('address', result);
+  });
+});
+(0, _helpers.onUpdateField)('city', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    city: value
+  });
+  _uploadProperty3.formValidation.validateField('city', newProperty.city).then(function (result) {
+    (0, _helpers.onSetError)('city', result);
+  });
+});
+(0, _helpers.onUpdateField)('province', function (event) {
+  var value = event.target.value;
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    provinceId: value
+  });
+  _uploadProperty3.formValidation.validateField('province', newProperty.provinceId).then(function (result) {
+    (0, _helpers.onSetError)('province', result);
+  });
+});
+(0, _helpers.onUpdateField)('squareMeter', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    squareMeter: value
+  });
+  _uploadProperty3.formValidation.validateField('squareMeter', newProperty.squareMeter).then(function (result) {
+    (0, _helpers.onSetError)('squareMeter', result);
+  });
+});
+(0, _helpers.onUpdateField)('rooms', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    rooms: value
+  });
+  _uploadProperty3.formValidation.validateField('rooms', newProperty.rooms).then(function (result) {
+    (0, _helpers.onSetError)('rooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('bathrooms', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    bathrooms: value
+  });
+  _uploadProperty3.formValidation.validateField('bathrooms', newProperty.bathrooms).then(function (result) {
+    (0, _helpers.onSetError)('bathrooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('locationUrl', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
+    locationUrl: value
+  });
+  _uploadProperty3.formValidation.validateField('locationUrl', newProperty.locationUrl).then(function (result) {
+    (0, _helpers.onSetError)('locationUrl', result);
   });
 });
 var setEvents = function setEvents(list, ID) {
   list.forEach(function (el) {
-    var id = (0, _uploadProperty.formatCheckboxId)(el);
+    var id = (0, _uploadProperty2.formatCheckboxId)(el);
     (0, _helpers.onUpdateField)(id, function (event) {
       var value = event.target.value;
       if (event.target.checked === true) {
@@ -7105,107 +7200,51 @@ var removeElement = function removeElement(value, obj, id) {
     return element !== value;
   }))));
 };
-(0, _helpers.onUpdateField)('address', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    address: value
-  });
-  _uploadProperty2.formValidation.validateField('address', newProperty.address).then(function (result) {
-    (0, _helpers.onSetError)('address', result);
-  });
-});
-(0, _helpers.onUpdateField)('city', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    city: value
-  });
-  _uploadProperty2.formValidation.validateField('city', newProperty.city).then(function (result) {
-    (0, _helpers.onSetError)('city', result);
-  });
-});
-(0, _helpers.onUpdateField)('province', function (event) {
-  var value = event.target.value;
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    provinceId: value
-  });
-  _uploadProperty2.formValidation.validateField('province', newProperty.provinceId).then(function (result) {
-    (0, _helpers.onSetError)('province', result);
-  });
-});
-(0, _helpers.onUpdateField)('squareMeter', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    squareMeter: value
-  });
-  _uploadProperty2.formValidation.validateField('squareMeter', newProperty.squareMeter).then(function (result) {
-    (0, _helpers.onSetError)('squareMeter', result);
-  });
-});
-(0, _helpers.onUpdateField)('rooms', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    rooms: value
-  });
-  _uploadProperty2.formValidation.validateField('rooms', newProperty.rooms).then(function (result) {
-    (0, _helpers.onSetError)('rooms', result);
-  });
-});
-(0, _helpers.onUpdateField)('bathrooms', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    bathrooms: value
-  });
-  _uploadProperty2.formValidation.validateField('bathrooms', newProperty.bathrooms).then(function (result) {
-    (0, _helpers.onSetError)('bathrooms', result);
-  });
-});
-(0, _helpers.onUpdateField)('locationUrl', function (event) {
-  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-  newProperty = _objectSpread(_objectSpread({}, newProperty), {}, {
-    locationUrl: value
-  });
-  _uploadProperty2.formValidation.validateField('locationUrl', newProperty.locationUrl).then(function (result) {
-    (0, _helpers.onSetError)('locationUrl', result);
-  });
-});
 (0, _helpers.onSubmitForm)('insert-feature-button', function () {
   var value = document.getElementById('newFeature').value;
   if (value) {
     var _value = document.getElementById('newFeature').value;
     if (_value) {
-      var deleteId = (0, _uploadProperty.formatDeleteFeatureButtonId)(_value);
+      var deleteId = (0, _uploadProperty2.formatDeleteFeatureButtonId)(_value);
       newProperty = addElement(_value, newProperty, 'mainFeatures');
-      (0, _uploadProperty.onAddFeature)(_value);
+      (0, _uploadProperty2.onAddFeature)(_value);
       (0, _helpers.onSubmitForm)(deleteId, function () {
-        (0, _uploadProperty.onRemoveFeature)(_value);
+        (0, _uploadProperty2.onRemoveFeature)(_value);
         newProperty = removeElement(_value, newProperty, 'mainFeatures');
       });
     }
   }
 });
-Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getprovincesList)(), (0, _uploadProperty3.getEquipmentList)()]).then(function (_ref) {
+(0, _helpers.onAddFile)('add-image', function (event) {
+  (0, _uploadProperty2.onAddImage)(event);
+  console.log(event);
+  var value = event;
+  newProperty = addElement(value, newProperty, 'images');
+});
+Promise.all([(0, _uploadProperty4.getSaleTypeList)(), (0, _uploadProperty4.getprovincesList)(), (0, _uploadProperty4.getEquipmentList)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3),
     checksSalesTypes = _ref2[0],
     provinces = _ref2[1],
     checksEquipments = _ref2[2];
-  (0, _uploadProperty.setCheckboxList)(checksSalesTypes, 'saleTypes');
-  (0, _uploadProperty.setOptionList)(provinces, 'province');
-  (0, _uploadProperty.setCheckboxList)(checksEquipments, 'equipments');
+  (0, _uploadProperty2.setCheckboxList)(checksSalesTypes, 'saleTypes');
+  (0, _uploadProperty2.setOptionList)(provinces, 'province');
+  (0, _uploadProperty2.setCheckboxList)(checksEquipments, 'equipments');
   setEvents(checksSalesTypes, 'saleTypes');
   setEvents(checksEquipments, 'equipments');
 });
 (0, _helpers.onSubmitForm)('save-button', function () {
-  _uploadProperty2.formValidation.validateForm(newProperty).then(function (result) {
+  _uploadProperty3.formValidation.validateForm(newProperty).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
-    //   if (result.succeeded) {
-    //     insertMessage(formContact);
-    //     alert('Hemos recibido su mensaje');
-    //   }
-    (0, _uploadProperty3.posttNewProperty)(newProperty);
-    console.log(newProperty);
+    if (result.succeeded) {
+      var newPropertyToApi = (0, _uploadProperty.mapnewPropertyFromVMTOAPI)(newProperty);
+      (0, _uploadProperty4.posttNewProperty)(newPropertyToApi);
+      alert('Nueva propiedad añadida');
+    }
+
+    // console.log(newProperty);
   });
 });
-},{"../../core/router/history":"core/router/history.js","../../common/helpers":"common/helpers/index.js","./upload-property.helpers":"pages/upload-property/upload-property.helpers.js","./upload-property.validations":"pages/upload-property/upload-property.validations.js","./upload-property.api":"pages/upload-property/upload-property.api.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../../core/router/history":"core/router/history.js","./upload-property.mappers":"pages/upload-property/upload-property.mappers.js","../../common/helpers":"common/helpers/index.js","./upload-property.helpers":"pages/upload-property/upload-property.helpers.js","./upload-property.validations":"pages/upload-property/upload-property.validations.js","./upload-property.api":"pages/upload-property/upload-property.api.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -7230,7 +7269,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54688" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64724" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];
