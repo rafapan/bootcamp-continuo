@@ -21,7 +21,7 @@ export const getprovincesList = () =>
     return response.data;
   });
 
-const posttNewPropertyUrl = `${process.env.BASE_API_URL}/properties`;
+const postNewPropertyUrl = `${process.env.BASE_API_URL}/properties`;
 
 export const posttNewProperty = (property) =>
-  Axios.post(`${posttNewPropertyUrl}`, property).then(({ data }) => data);
+  Axios.post(`${postNewPropertyUrl}`, property).then(({ data }) => data);

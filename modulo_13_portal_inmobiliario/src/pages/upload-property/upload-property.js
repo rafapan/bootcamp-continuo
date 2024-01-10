@@ -9,6 +9,7 @@
  */
 console.log('subir una propiedad');
 import { history } from '../../core/router/history';
+import { mapnewPropertyFromVMTOAPI } from "./upload-property.mappers";
 import {
   onUpdateField,
   onSubmitForm,
@@ -217,10 +218,11 @@ onSubmitForm('save-button', () => {
   formValidation.validateForm(newProperty).then((result) => {
     onSetFormErrors(result);
       if (result.succeeded) {
-        posttNewProperty(newProperty);
+        const newPropertyToApi = mapnewPropertyFromVMTOAPI(newProperty)
+        posttNewProperty(newPropertyToApi);
         alert('Nueva propiedad añadida');
       }
     
-    console.log(newProperty);
+    // console.log(newProperty);
   });
 });
