@@ -22,6 +22,7 @@ import {
   formatCheckboxId,
   onAddFeature,
   onRemoveFeature,
+  formatDeleteFeatureButtonId,
   onAddImage,
 } from './upload-property.helpers';
 import { formValidation } from './upload-property.validations';
@@ -29,9 +30,11 @@ import {
   getprovincesList,
   getSaleTypeList,
   getEquipmentList,
+  posttNewProperty,
 } from './upload-property.api';
 
 let newProperty = {
+  id: '',
   title: '',
   notes: '',
   email: '',
@@ -50,6 +53,7 @@ let newProperty = {
   images: '',
   equipments: [],
   equipmentId: [],
+  mainFeatures: [],
 };
 
 onUpdateField('title', (event) => {
@@ -174,28 +178,27 @@ onUpdateField('locationUrl', (event) => {
     });
 });
 
-// onUpdateField('images', (event) => {
-//   const value = event.target.value;
-//   newProperty = { ...newProperty, newImage: value };
-//   onAddFile('add-image', (value) => {
-//     onAddImage(value);
-//     newProperty.images.push(value);
-//   });
-//   formValidation.validateField('images', newProperty.images).then((result) => {
-//     onSetError('images', result);
-//   });
-// });
-
-onSubmitForm('save-button', () => {
-  formValidation.validateForm(newProperty).then((result) => {
-    onSetFormErrors(result);
-    //   if (result.succeeded) {
-    //     insertMessage(formContact);
-    //     alert('Hemos recibido su mensaje');
-    //   }
-    console.log(newProperty);
-  });
+onSubmitForm('insert-feature-button', () => {
+  const value = document.getElementById('newFeature').value;
+  if (value) {
+    const value = document.getElementById('newFeature').value;
+    if (value) {
+      const deleteId = formatDeleteFeatureButtonId(value);
+      newProperty = addElement(value, newProperty, 'mainFeatures');
+      onAddFeature(value);
+      onSubmitForm(deleteId, () => {
+        onRemoveFeature(value);
+        newProperty = removeElement(value, newProperty, 'mainFeatures');
+      });
+    }
+  }
 });
+
+// onSubmitForm('delete-de-button', () => {
+//     onRemoveFeature(myFeature);
+//         let index = newProperty.mainFeatures.indexOf(myFeature);
+//         newProperty.mainFeatures.splice(index, 1);
+// })
 
 Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
   ([checksSalesTypes, provinces, checksEquipments]) => {
@@ -207,3 +210,15 @@ Promise.all([getSaleTypeList(), getprovincesList(), getEquipmentList()]).then(
     setEvents(checksEquipments, 'equipments');
   }
 );
+
+onSubmitForm('save-button', () => {
+  formValidation.validateForm(newProperty).then((result) => {
+    onSetFormErrors(result);
+    //   if (result.succeeded) {
+    //     insertMessage(formContact);
+    //     alert('Hemos recibido su mensaje');
+    //   }
+    posttNewProperty(newProperty);
+    console.log(newProperty);
+  });
+});

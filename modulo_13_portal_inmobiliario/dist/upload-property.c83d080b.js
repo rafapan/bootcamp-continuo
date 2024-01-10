@@ -6955,7 +6955,7 @@ module.exports = require('./lib/axios');
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getprovincesList = exports.getSaleTypeList = exports.getEquipmentList = void 0;
+exports.posttNewProperty = exports.getprovincesList = exports.getSaleTypeList = exports.getEquipmentList = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var equipmentListUrl = "".concat("http://localhost:3000/api", "/equipments");
@@ -6974,6 +6974,13 @@ var provincesListUrl = "".concat("http://localhost:3000/api", "/provinces");
 var getprovincesList = exports.getprovincesList = function getprovincesList() {
   return _axios.default.get(provincesListUrl).then(function (response) {
     return response.data;
+  });
+};
+var posttNewPropertyUrl = "".concat("http://localhost:3000/api", "/properties");
+var posttNewProperty = exports.posttNewProperty = function posttNewProperty(property) {
+  return _axios.default.post("".concat(posttNewPropertyUrl), property).then(function (_ref) {
+    var data = _ref.data;
+    return data;
   });
 };
 },{"axios":"../node_modules/axios/index.js"}],"pages/upload-property/upload-property.js":[function(require,module,exports) {
@@ -7011,6 +7018,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
  */
 console.log('subir una propiedad');
 var newProperty = {
+  id: '',
   title: '',
   notes: '',
   email: '',
@@ -7028,7 +7036,8 @@ var newProperty = {
   saleTypesId: [],
   images: '',
   equipments: [],
-  equipmentId: []
+  equipmentId: [],
+  mainFeatures: []
 };
 (0, _helpers.onUpdateField)('title', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
@@ -7159,29 +7168,28 @@ var removeElement = function removeElement(value, obj, id) {
     (0, _helpers.onSetError)('locationUrl', result);
   });
 });
-
-// onUpdateField('images', (event) => {
-//   const value = event.target.value;
-//   newProperty = { ...newProperty, newImage: value };
-//   onAddFile('add-image', (value) => {
-//     onAddImage(value);
-//     newProperty.images.push(value);
-//   });
-//   formValidation.validateField('images', newProperty.images).then((result) => {
-//     onSetError('images', result);
-//   });
-// });
-
-(0, _helpers.onSubmitForm)('save-button', function () {
-  _uploadProperty2.formValidation.validateForm(newProperty).then(function (result) {
-    (0, _helpers.onSetFormErrors)(result);
-    //   if (result.succeeded) {
-    //     insertMessage(formContact);
-    //     alert('Hemos recibido su mensaje');
-    //   }
-    console.log(newProperty);
-  });
+(0, _helpers.onSubmitForm)('insert-feature-button', function () {
+  var value = document.getElementById('newFeature').value;
+  if (value) {
+    var _value = document.getElementById('newFeature').value;
+    if (_value) {
+      var deleteId = (0, _uploadProperty.formatDeleteFeatureButtonId)(_value);
+      newProperty = addElement(_value, newProperty, 'mainFeatures');
+      (0, _uploadProperty.onAddFeature)(_value);
+      (0, _helpers.onSubmitForm)(deleteId, function () {
+        (0, _uploadProperty.onRemoveFeature)(_value);
+        newProperty = removeElement(_value, newProperty, 'mainFeatures');
+      });
+    }
+  }
 });
+
+// onSubmitForm('delete-de-button', () => {
+//     onRemoveFeature(myFeature);
+//         let index = newProperty.mainFeatures.indexOf(myFeature);
+//         newProperty.mainFeatures.splice(index, 1);
+// })
+
 Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getprovincesList)(), (0, _uploadProperty3.getEquipmentList)()]).then(function (_ref) {
   var _ref2 = _slicedToArray(_ref, 3),
     checksSalesTypes = _ref2[0],
@@ -7192,6 +7200,17 @@ Promise.all([(0, _uploadProperty3.getSaleTypeList)(), (0, _uploadProperty3.getpr
   (0, _uploadProperty.setCheckboxList)(checksEquipments, 'equipments');
   setEvents(checksSalesTypes, 'saleTypes');
   setEvents(checksEquipments, 'equipments');
+});
+(0, _helpers.onSubmitForm)('save-button', function () {
+  _uploadProperty2.formValidation.validateForm(newProperty).then(function (result) {
+    (0, _helpers.onSetFormErrors)(result);
+    //   if (result.succeeded) {
+    //     insertMessage(formContact);
+    //     alert('Hemos recibido su mensaje');
+    //   }
+    (0, _uploadProperty3.posttNewProperty)(newProperty);
+    console.log(newProperty);
+  });
 });
 },{"../../core/router/history":"core/router/history.js","../../common/helpers":"common/helpers/index.js","./upload-property.helpers":"pages/upload-property/upload-property.helpers.js","./upload-property.validations":"pages/upload-property/upload-property.validations.js","./upload-property.api":"pages/upload-property/upload-property.api.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];

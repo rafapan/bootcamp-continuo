@@ -20,3 +20,8 @@ export const getprovincesList = () =>
   Axios.get(provincesListUrl).then((response) => {
     return response.data;
   });
+
+const posttNewPropertyUrl = `${process.env.BASE_API_URL}/properties`;
+
+export const posttNewProperty = (property) =>
+  Axios.post(`${posttNewPropertyUrl}`, property).then(({ data }) => data);
