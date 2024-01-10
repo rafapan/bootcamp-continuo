@@ -1,4 +1,5 @@
 import { Validators, createFormValidation } from '@lemoncode/fonk';
+import { isUrl } from '@lemoncode/fonk-is-url-validator';
 
 const validationSchema = {
   field: {
@@ -40,6 +41,40 @@ const validationSchema = {
       {
         validator: Validators.required,
         message: 'Campo requerido',
+      },
+    ],
+    city: [
+      {
+        validator: Validators.required,
+        message: 'Campo requerido',
+      },
+    ],
+    squareMeter: [
+      {
+        validator: Validators.required,
+        message: 'Campo requerido',
+      },
+    ],
+    rooms: [
+      {
+        validator: Validators.required,
+        message: 'Campo requerido',
+      },
+    ],
+    bathrooms: [
+      {
+        validator: Validators.required,
+        message: 'Campo requerido',
+      },
+    ],
+    locationUrl: [
+      {
+        validator: Validators.required,
+        message: 'Campo requerido',
+      },
+      {
+        validator: isUrl.validator,
+        message: 'Introduzca una URL válida',
       },
     ],
   },

@@ -4979,7 +4979,44 @@ var index = exports.Validators = {
   maxLength: maxLength,
   array: array
 };
-},{}],"pages/upload-property/upload-property.validations.js":[function(require,module,exports) {
+},{}],"../node_modules/@lemoncode/fonk-is-url-validator/dist/@lemoncode/fonk-is-url-validator.esm.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.isUrl = void 0;
+var _fonk = require("@lemoncode/fonk");
+var VALIDATOR_TYPE = 'IS_URL';
+var defaultMessage = 'Provided value is not a valid url';
+var setErrorMessage = function setErrorMessage(message) {
+  return defaultMessage = message;
+};
+var isDefined = function isDefined(value) {
+  return value !== void 0 && value !== null && value !== '';
+};
+var regex = /^(?:((?:(?:https?|ftp):\/\/))|(?:www.))+(?:\S+(?::\S*)?@)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z0-9\u00a1-\uffff][a-z0-9\u00a1-\uffff_-]{0,62})?[a-z0-9\u00a1-\uffff]\.)+(?:[a-z\u00a1-\uffff]{2,}\.?))(?::\d{2,5})?(?:[/?#]\S*)?$/;
+var isUrl = function isUrl(url) {
+  return regex.test(url);
+};
+var validator = function validator(fieldValidatorArgs) {
+  var value = fieldValidatorArgs.value,
+    _fieldValidatorArgs$m = fieldValidatorArgs.message,
+    message = _fieldValidatorArgs$m === void 0 ? defaultMessage : _fieldValidatorArgs$m,
+    customArgs = fieldValidatorArgs.customArgs;
+  var succeeded = !isDefined(value) || isUrl(value);
+  return {
+    succeeded: succeeded,
+    message: succeeded ? '' : (0, _fonk.parseMessageWithCustomArgs)(message || defaultMessage, customArgs),
+    type: VALIDATOR_TYPE
+  };
+};
+var validator$1 = exports.isUrl = /*#__PURE__*/Object.freeze({
+  __proto__: null,
+  setErrorMessage: setErrorMessage,
+  validator: validator
+});
+},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js"}],"pages/upload-property/upload-property.validations.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4987,6 +5024,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.formValidation = void 0;
 var _fonk = require("@lemoncode/fonk");
+var _fonkIsUrlValidator = require("@lemoncode/fonk-is-url-validator");
 var validationSchema = {
   field: {
     title: [{
@@ -5015,11 +5053,34 @@ var validationSchema = {
     address: [{
       validator: _fonk.Validators.required,
       message: 'Campo requerido'
+    }],
+    city: [{
+      validator: _fonk.Validators.required,
+      message: 'Campo requerido'
+    }],
+    squareMeter: [{
+      validator: _fonk.Validators.required,
+      message: 'Campo requerido'
+    }],
+    rooms: [{
+      validator: _fonk.Validators.required,
+      message: 'Campo requerido'
+    }],
+    bathrooms: [{
+      validator: _fonk.Validators.required,
+      message: 'Campo requerido'
+    }],
+    locationUrl: [{
+      validator: _fonk.Validators.required,
+      message: 'Campo requerido'
+    }, {
+      validator: _fonkIsUrlValidator.isUrl.validator,
+      message: 'Introduzca una URL válida'
     }]
   }
 };
 var formValidation = exports.formValidation = (0, _fonk.createFormValidation)(validationSchema);
-},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js"}],"pages/upload-property/upload-property.js":[function(require,module,exports) {
+},{"@lemoncode/fonk":"../node_modules/@lemoncode/fonk/dist/@lemoncode/fonk.esm.js","@lemoncode/fonk-is-url-validator":"../node_modules/@lemoncode/fonk-is-url-validator/dist/@lemoncode/fonk-is-url-validator.esm.js"}],"pages/upload-property/upload-property.js":[function(require,module,exports) {
 "use strict";
 
 var _history = require("../../core/router/history");
@@ -5047,7 +5108,12 @@ var formUpload = {
   email: '',
   phone: '',
   price: '',
-  address: ''
+  address: '',
+  city: '',
+  squareMeter: '',
+  rooms: '',
+  bathrooms: '',
+  locationUrl: ''
 };
 (0, _helpers.onUpdateField)('title', function (event) {
   var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
@@ -5103,6 +5169,51 @@ var formUpload = {
     (0, _helpers.onSetError)('address', result);
   });
 });
+(0, _helpers.onUpdateField)('city', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+    city: value
+  });
+  _uploadProperty.formValidation.validateField('city', formUpload.city).then(function (result) {
+    (0, _helpers.onSetError)('city', result);
+  });
+});
+(0, _helpers.onUpdateField)('squareMeter', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+    squareMeter: value
+  });
+  _uploadProperty.formValidation.validateField('squareMeter', formUpload.squareMeter).then(function (result) {
+    (0, _helpers.onSetError)('squareMeter', result);
+  });
+});
+(0, _helpers.onUpdateField)('rooms', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+    rooms: value
+  });
+  _uploadProperty.formValidation.validateField('rooms', formUpload.rooms).then(function (result) {
+    (0, _helpers.onSetError)('rooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('bathrooms', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+    bathrooms: value
+  });
+  _uploadProperty.formValidation.validateField('bathrooms', formUpload.bathrooms).then(function (result) {
+    (0, _helpers.onSetError)('bathrooms', result);
+  });
+});
+(0, _helpers.onUpdateField)('locationUrl', function (event) {
+  var value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = _objectSpread(_objectSpread({}, formUpload), {}, {
+    locationUrl: value
+  });
+  _uploadProperty.formValidation.validateField('locationUrl', formUpload.locationUrl).then(function (result) {
+    (0, _helpers.onSetError)('locationUrl', result);
+  });
+});
 (0, _helpers.onSubmitForm)('save-button', function () {
   _uploadProperty.formValidation.validateForm(formUpload).then(function (result) {
     (0, _helpers.onSetFormErrors)(result);
@@ -5138,7 +5249,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50849" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50426" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

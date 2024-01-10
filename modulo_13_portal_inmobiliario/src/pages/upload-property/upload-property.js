@@ -24,6 +24,11 @@ let formUpload = {
   phone: '',
   price: '',
   address: '',
+  city: '',
+  squareMeter: '',
+  rooms: '',
+  bathrooms: '',
+  locationUrl: '',
 };
 
 onUpdateField('title', (event) => {
@@ -67,20 +72,61 @@ onUpdateField('price', (event) => {
 });
 
 onUpdateField('address', (event) => {
-    const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
-    formUpload = { ...formUpload, address: value };
-    formValidation.validateField('address', formUpload.address).then((result) => {
-      onSetError('address', result);
-    });
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, address: value };
+  formValidation.validateField('address', formUpload.address).then((result) => {
+    onSetError('address', result);
   });
+});
+onUpdateField('city', (event) => {
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, city: value };
+  formValidation.validateField('city', formUpload.city).then((result) => {
+    onSetError('city', result);
+  });
+});
+onUpdateField('squareMeter', (event) => {
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, squareMeter: value };
+  formValidation
+    .validateField('squareMeter', formUpload.squareMeter)
+    .then((result) => {
+      onSetError('squareMeter', result);
+    });
+});
+onUpdateField('rooms', (event) => {
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, rooms: value };
+  formValidation.validateField('rooms', formUpload.rooms).then((result) => {
+    onSetError('rooms', result);
+  });
+});
+onUpdateField('bathrooms', (event) => {
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, bathrooms: value };
+  formValidation
+    .validateField('bathrooms', formUpload.bathrooms)
+    .then((result) => {
+      onSetError('bathrooms', result);
+    });
+});
+onUpdateField('locationUrl', (event) => {
+  const value = event.target.value; //cuando el usuario pulse una tecla en el input nos proporciona este método el evento
+  formUpload = { ...formUpload, locationUrl: value };
+  formValidation
+    .validateField('locationUrl', formUpload.locationUrl)
+    .then((result) => {
+      onSetError('locationUrl', result);
+    });
+});
 
 onSubmitForm('save-button', () => {
-    formValidation.validateForm(formUpload).then((result) => {
-      onSetFormErrors(result);
+  formValidation.validateForm(formUpload).then((result) => {
+    onSetFormErrors(result);
     //   if (result.succeeded) {
     //     insertMessage(formContact);
     //     alert('Hemos recibido su mensaje');
     //   }
-      console.log(formUpload);
-    });
+    console.log(formUpload);
   });
+});
