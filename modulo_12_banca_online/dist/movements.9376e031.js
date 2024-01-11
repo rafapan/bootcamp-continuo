@@ -2036,12 +2036,21 @@ var addMovementRows = exports.addMovementRows = function addMovementRows(movemen
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.getMovements = void 0;
+exports.getMovements = exports.getAccount = void 0;
 var _axios = _interopRequireDefault(require("axios"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var url = "".concat("http://localhost:3000/api", "/movements");
 var getMovements = exports.getMovements = function getMovements() {
   return _axios.default.get(url).then(function (response) {
+    return response.data;
+  });
+};
+var getAccount = exports.getAccount = function getAccount(id) {
+  return _axios.default.get(url, {
+    params: {
+      acountId: id
+    }
+  }).then(function (response) {
     return response.data;
   });
 };
@@ -2062,9 +2071,8 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 
 // Lo que nos viene de servidor es un array. Necesitamos un metodo que mapee realmente un accountList de la api al viewmodel
 // export const mapAccountListApiToViewModel = (accountList) =>
-//   Array.isArray(accountList)
-//     ? accountList.map((account) => mapAccountListApiToViewModel(account))
-//     : [];
+//   Array.isArray(accountList) ? accountList.map((account) => mapAccountListApiToViewModel(account))
+//   : [];
 
 var mapMovementsListFromApiToViewModel = exports.mapMovementsListFromApiToViewModel = function mapMovementsListFromApiToViewModel(movements, accountId) {
   return Array.isArray(movements) ? movements.map(function (moves) {
@@ -2079,6 +2087,31 @@ var mapMovementsFromApiToViewModel = function mapMovementsFromApiToViewModel(mov
     realTransaction: new Date(movements.realTransaction).toLocaleDateString(),
     amount: "".concat(movements.amount, " \u20AC"),
     balance: "".concat(movements.balance, " \u20AC")
+  });
+};
+},{}],"pages/account/account.mappers.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.mapAccountFromViewModelToApi = exports.mapAccountFromApiToViewModel = void 0;
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
+function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
+var mapAccountFromApiToViewModel = exports.mapAccountFromApiToViewModel = function mapAccountFromApiToViewModel(account) {
+  return _objectSpread(_objectSpread({}, account), {}, {
+    alias: account.name
+  });
+};
+
+// necesitamos un mapper inverso para enviarselo al servidor
+var mapAccountFromViewModelToApi = exports.mapAccountFromViewModelToApi = function mapAccountFromViewModelToApi(account) {
+  return _objectSpread(_objectSpread({}, account), {}, {
+    name: account.alias
   });
 };
 },{}],"core/router/routes.js":[function(require,module,exports) {
@@ -4283,32 +4316,7 @@ Object.keys(_history).forEach(function (key) {
     }
   });
 });
-},{"./routes":"core/router/routes.js","./history":"core/router/history.js"}],"pages/account/account.mappers.js":[function(require,module,exports) {
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports.mapAccountFromViewModelToApi = exports.mapAccountFromApiToViewModel = void 0;
-function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
-function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" == _typeof(i) ? i : String(i); }
-function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
-var mapAccountFromApiToViewModel = exports.mapAccountFromApiToViewModel = function mapAccountFromApiToViewModel(account) {
-  return _objectSpread(_objectSpread({}, account), {}, {
-    alias: account.name
-  });
-};
-
-// necesitamos un mapper inverso para enviarselo al servidor
-var mapAccountFromViewModelToApi = exports.mapAccountFromViewModelToApi = function mapAccountFromViewModelToApi(account) {
-  return _objectSpread(_objectSpread({}, account), {}, {
-    name: account.alias
-  });
-};
-},{}],"pages/movements/movements.js":[function(require,module,exports) {
+},{"./routes":"core/router/routes.js","./history":"core/router/history.js"}],"pages/movements/movements.js":[function(require,module,exports) {
 "use strict";
 
 var _account = require("../account/account.api");
@@ -4316,37 +4324,37 @@ var _helpers = require("../../common/helpers");
 var _movements = require("./movements.helpers");
 var _movements2 = require("./movements.api");
 var _movements3 = require("./movements.mappers");
-var _router = require("../../core/router");
 var _account2 = require("../account/account.mappers");
-var account = {
-  id: '',
-  type: '',
-  alias: ''
-};
+var _router = require("../../core/router");
+// let account = {
+//   id: '',
+//   type: '',
+//   alias: '',
+// };
+
 var params = _router.history.getParams();
-var getParamsAccount = Boolean(params.id);
-if (getParamsAccount) {
+var isEditMode = Boolean(params.id);
+if (isEditMode) {
   (0, _account.getAccount)(params.id).then(function (apiAccount) {
-    account = (0, _account2.mapAccountFromApiToViewModel)(apiAccount);
+    var account = (0, _account2.mapAccountFromApiToViewModel)(apiAccount);
     (0, _helpers.onSetValues)(account);
+    console.log(params.id);
+  });
+  (0, _movements2.getMovements)().then(function (movements) {
+    var viewModelMovements = (0, _movements3.mapMovementsListFromApiToViewModel)(movements, params.id);
+    var myMovements = function myMovements(event) {
+      return event.filter(function (element) {
+        return element !== undefined;
+      });
+    };
+    (0, _movements.addMovementRows)(myMovements(viewModelMovements));
+  });
+} else {
+  (0, _movements2.getMovements)().then(function (movements) {
+    (0, _movements.addMovementRows)(movements);
   });
 }
-(0, _movements2.getMovements)().then(function (movements) {
-  (0, _movements.addMovementRows)(movements);
-});
-
-// getAccountList().then((accountList) => {
-//   const viewModelAccountList = mapAccountListFromApiToViewModel(accountList);
-//     addAccountRows(viewModelAccountList);
-
-//     viewModelAccountList.forEach(account => {
-//       onUpdateField(`select-${account.id}`, (event) => {
-//           const route = event.target.value;
-//           history.push(route);
-//       })
-//     })
-//   });
-},{"../account/account.api":"pages/account/account.api.js","../../common/helpers":"common/helpers/index.js","./movements.helpers":"pages/movements/movements.helpers.js","./movements.api":"pages/movements/movements.api.js","./movements.mappers":"pages/movements/movements.mappers.js","../../core/router":"core/router/index.js","../account/account.mappers":"pages/account/account.mappers.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../account/account.api":"pages/account/account.api.js","../../common/helpers":"common/helpers/index.js","./movements.helpers":"pages/movements/movements.helpers.js","./movements.api":"pages/movements/movements.api.js","./movements.mappers":"pages/movements/movements.mappers.js","../account/account.mappers":"pages/account/account.mappers.js","../../core/router":"core/router/index.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -4371,7 +4379,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51394" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57618" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

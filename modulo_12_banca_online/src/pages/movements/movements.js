@@ -4,37 +4,33 @@ import { onSetValues } from '../../common/helpers';
 import { addMovementRows } from './movements.helpers';
 import { getMovements } from './movements.api';
 import { mapMovementsListFromApiToViewModel } from './movements.mappers';
+import { mapAccountFromApiToViewModel } from '../account/account.mappers'
 import { history } from '../../core/router';
-import { mapAccountFromApiToViewModel } from '../account/account.mappers';
 
-let account = {
-  id: '',
-  type: '',
-  alias: '',
-};
+// let account = {
+//   id: '',
+//   type: '',
+//   alias: '',
+// };
 
 const params = history.getParams();
-const getParamsAccount = Boolean(params.id);
+const isEditMode = Boolean(params.id);
 
-if (getParamsAccount) {
+if (isEditMode) {
   getAccount(params.id).then((apiAccount) => {
-    account = mapAccountFromApiToViewModel(apiAccount);
+    const account = mapAccountFromApiToViewModel(apiAccount);
     onSetValues(account);
+    console.log(params.id)
+  });
+  getMovements().then((movements) => {
+    const viewModelMovements = mapMovementsListFromApiToViewModel(movements, params.id);
+    const myMovements = (event) =>
+      event.filter((element) => element !== undefined);
+    addMovementRows(myMovements(viewModelMovements));
+  });
+} else {
+  getMovements().then((movements) => {
+    addMovementRows(movements);
   });
 }
 
-getMovements().then((movements) => {
-  addMovementRows(movements);
-});
-
-// getAccountList().then((accountList) => {
-//   const viewModelAccountList = mapAccountListFromApiToViewModel(accountList);
-//     addAccountRows(viewModelAccountList);
-
-//     viewModelAccountList.forEach(account => {
-//       onUpdateField(`select-${account.id}`, (event) => {
-//           const route = event.target.value;
-//           history.push(route);
-//       })
-//     })
-//   });
