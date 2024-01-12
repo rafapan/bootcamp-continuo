@@ -60,21 +60,9 @@ onSubmitForm('save-button', () => {
   formValidation.validateForm(account).then((result) => {
     onSetFormErrors(result);
     if (result.succeeded) {
-      onSave().then((apiAccount) => {
+      onSave().then(() => {
         history.back(); //método back que es volver atrás
       });
     }
   });
 });
-
-// insert insertar nueva cuenta
-// get obtener los datos actuales mediante un id
-// update actualizar la cuenta
-
-/*
-Account {
-    id: string;
-    type: string;
-    alias: string; // name -> alias (necesitamos un mapper)
-} 
-*/

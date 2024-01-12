@@ -2104,14 +2104,16 @@ function _toPropertyKey(t) { var i = _toPrimitive(t, "string"); return "symbol" 
 function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || "default"); if ("object" != _typeof(i)) return i; throw new TypeError("@@toPrimitive must return a primitive value."); } return ("string" === r ? String : Number)(t); }
 var mapAccountFromApiToViewModel = exports.mapAccountFromApiToViewModel = function mapAccountFromApiToViewModel(account) {
   return _objectSpread(_objectSpread({}, account), {}, {
-    alias: account.name
+    alias: account.name,
+    type: account.type
   });
 };
 
 // necesitamos un mapper inverso para enviarselo al servidor
 var mapAccountFromViewModelToApi = exports.mapAccountFromViewModelToApi = function mapAccountFromViewModelToApi(account) {
   return _objectSpread(_objectSpread({}, account), {}, {
-    name: account.alias
+    name: account.alias,
+    type: account.type
   });
 };
 },{}],"core/router/routes.js":[function(require,module,exports) {
@@ -4379,7 +4381,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50905" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52079" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

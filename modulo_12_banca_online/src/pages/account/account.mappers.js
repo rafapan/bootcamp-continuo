@@ -2,6 +2,7 @@ export const mapAccountFromApiToViewModel = (account) => {
   return {
     ...account,
     alias: account.name,
+    type: account.type,
   };
 };
 
@@ -10,5 +11,6 @@ export const mapAccountFromViewModelToApi = (account) => {
   return {
     ...account,
     name: account.alias,
+    type: account.type,
   };
 };
